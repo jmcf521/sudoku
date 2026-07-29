@@ -4,7 +4,7 @@
 function checkRow(board, row, num) {
     for (let c = 0; c < 9; c++) {
         const i = row * 9 + c;
-        console.log("row " + row + " col " + c + " num " + board[i] + " input " + num);
+        //console.log("row " + row + " col " + c + " num " + board[i] + " input " + num);
         if (board[i] === num) {
             console.log("ROW INVALID");
             return false;
@@ -18,7 +18,7 @@ function checkRow(board, row, num) {
 function checkCol(board, col, num) {
     for (let r = 0; r < 9; r++) {
         const i = r * 9 + col;
-        console.log("row " + r + " col " + col + " num " + board[i] + " input " + num);
+        //console.log("row " + r + " col " + col + " num " + board[i] + " input " + num);
         if (board[i] === num) {
             console.log("COL INVALID");
             return false;
@@ -49,8 +49,9 @@ function checkBox(board, row, col, num) {
 function isValid(board, index, num) {
     const row = Math.floor(index / 9);
     const col = index % 9;
-
-    return checkRow(board, row, num) && checkCol(board, col, num) && checkBox(board, row, col, num);
+    const valid = checkRow(board, row, num) && checkCol(board, col, num) && checkBox(board, row, col, num);
+    console.log("num " + num + " valid " + valid);
+    return valid;
 }
 
 function findEmptyCell(board) {

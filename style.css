@@ -55,10 +55,27 @@ h1 {
     color: #222;
     border: 1px solid #ccc;
     font-weight: bold;
+    background-color: #999999;
 }
 
 .selected {
-    background-color: #dadada;
+    background-color: #debfff;
+}
+
+.selected-given {
+    background-color: #888888;
+}
+
+.highlighted {
+    background-color: #ca99ff;
+}
+
+.highlighted-given {
+    background-color: #9f83bd;
+}
+
+.highlighted-num {
+    background-color: #7b2dcf;
 }
 
 .invalid {
