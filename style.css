@@ -1,0 +1,64 @@
+/* Include padding and border inside an element's width/height instead of adding to it */
+* {
+  box-sizing: border-box;
+}
+
+/* Reset default page margin, center everything on screen */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Center the title and board as a group */
+main {
+  text-align: center;
+}
+
+/* Style the "Sudoku" heading */
+h1 {
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 1.5rem;
+}
+
+/* Lay out 81 cells in a 9x9 grid, sized responsively but capped at 450px */
+.board {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  width: min(90vw, 450px);
+  height: min(90vw, 450px);
+  border: 2px solid #222;
+  background: #fff;
+}
+
+/* Center the number inside each cell, give each a thin default border */
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: #222;
+  border: 1px solid #ccc;
+}
+
+/* Thicken the right border every 3rd column to mark 3x3 box edges */
+.cell:nth-child(3n) {
+  border-right: 2px solid #222;
+}
+
+/* Thicken the left border on the first column (left edge of the board) */
+.cell:nth-child(9n+1) {
+  border-left: 2px solid #222;
+}
+
+/* Thicken the bottom border on rows 3 and 6 to mark 3x3 box edges */
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) {
+  border-bottom: 2px solid #222;
+}
