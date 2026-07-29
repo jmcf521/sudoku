@@ -26,13 +26,13 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
-/* Lay out 81 cells in a 9x9 grid, sized responsively but capped at 450px */
+/* Lay out 81 cells in a 9x9 grid, sized responsively but capped at 800px */
 .board {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
-  width: min(90vw, 450px);
-  height: min(90vw, 450px);
+  width: min(90vw, 800px);
+  height: min(90vw, 800px);
   border: 2px solid #222;
   background: #fff;
 }
