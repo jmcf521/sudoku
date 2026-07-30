@@ -58,14 +58,6 @@ h1 {
     background-color: #999999;
 }
 
-.selected {
-    background-color: #debfff;
-}
-
-.selected-given {
-    background-color: #888888;
-}
-
 .highlighted {
     background-color: #ca99ff;
 }
@@ -74,7 +66,7 @@ h1 {
     background-color: #9f83bd;
 }
 
-.highlighted-num {
+.selected-num {
     background-color: #7b2dcf;
 }
 
@@ -102,4 +94,23 @@ h1 {
 .cell:nth-child(n+19):nth-child(-n+27),
 .cell:nth-child(n+46):nth-child(-n+54) {
     border-bottom: 2px solid #222;
+}
+
+/* Lay out 9 number buttons in a row below the board */
+.number-pad {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* Style individual number buttons */
+.num-button {
+  width: 75px;
+  height: 75px;
+  font-size: 1.1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
 }
