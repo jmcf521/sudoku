@@ -115,18 +115,19 @@ numberPad.addEventListener("click", (event) => {
     if (selectedCell) {
         clearSelection();
 }
-    selectedCell = event.target;
+    selectedButton = event.target;
     highlightAll(currentBoard, parseInt(event.target.textContent));
 });
 
 // Event listener key inputs
 document.addEventListener("keydown", (event) => {
-    // Do nothing if no cell is selected, or if the selected cell is a fixed clue
+    // Do nothing if no cell or no button is selected
     if (!selectedCell && !selectedButton) return;
 
     // Let esc deselect cell
     if (event.key === "Escape") {
         clearSelection();
+        return;
     }
 
     if (!selectedCell.classList.contains("given")) {
@@ -203,7 +204,6 @@ function highlightRow(selectedRow) {
         const i = selectedRow * 9 + c;
         if (!board.children[i].classList.contains("selected-num")) board.children[i].classList.add("highlighted");
         if (board.children[i].classList.contains("given")) board.children[i].classList.add("highlighted-given");
-        console.log(board.children[i])
     }
 }
 
@@ -213,7 +213,6 @@ function highlightCol(selectedCol) {
         const i = r * 9 + selectedCol;
         if (!board.children[i].classList.contains("selected-num")) board.children[i].classList.add("highlighted");
         if (board.children[i].classList.contains("given")) board.children[i].classList.add("highlighted-given");
-        console.log(board.children[i])
     }
 }
 
