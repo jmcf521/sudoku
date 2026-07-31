@@ -126,10 +126,7 @@ document.addEventListener("keydown", (event) => {
 
         // Let Backspace/Delete clear the cell
         if (event.key === "Backspace" || event.key === "Delete") {
-            const index = parseInt(selectedCell.dataset.index);
-            currentBoard[index] = 0;
-            selectedCell.textContent = "";
-            selectedCell.classList.remove("invalid");
+            placeNumber("");
         }
     }
 
@@ -155,15 +152,20 @@ document.addEventListener("keydown", (event) => {
 function placeNumber(num) {
     const index = parseInt(selectedCell.dataset.index);
 
-    if (isValid(currentBoard, index, num)) {
-        currentBoard[index] = num;
-        selectedCell.textContent = num;
+    // Clear cell and update conflicts
+    if (num == "") {
+        currentBoard[index] = 0;
+        selectedCell.textContent = "";
         selectedCell.classList.remove("invalid");
-    } else {
-        currentBoard[index] = num;
-        selectedCell.textContent = num;
-        selectedCell.classList.add("invalid");
+        highlightInvalid();
+        return;
     }
+
+    // Update cell with valid num
+    currentBoard[index] = num;
+    selectedCell.textContent = num;
+    highlightInvalid();
+
 }
 
 function updateSelection(cell) {
@@ -212,8 +214,6 @@ function highlightCross() {
     highlightRow(selectedRow);
     highlightCol(selectedCol);
     highlightNum(givenNum);
-    highlightInputs();
-    // highlightBox(selectedRow, selectedCol);
 }
 
 // Highlight selectedRow
@@ -265,6 +265,17 @@ function highlightInputs() {
     }
 }
 
+// Check each cell and if it is invalid add invalid class
+function highlightInvalid() {
+    for (let i = 0; i < 81; i++) {
+        board.children[i].classList.remove("invalid");
+        if (!isValid(currentBoard, i, parseInt(currentBoard[i]))) {
+            board.children[i].classList.add("invalid");
+        }
+    }
+}
+
+//Clear highlighting classes from all cells
 function removeHighlight() {
     for (let i = 0; i < 81; i++) {
         board.children[i].classList.remove("highlighted");
