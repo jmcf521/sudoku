@@ -1,12 +1,21 @@
+:root {
+  /* One shared size variable that both the board and number pad scale from.
+     Takes the smallest of: 90% of viewport width, 65% of viewport height
+     (leaving room for the heading and number pad below), or 700px max. */
+  --board-size: min(90vw, 70dvh, 800px);
+}
+
 /* Include padding and border inside an element's width/height instead of adding to it */
 * {
     box-sizing: border-box;
 }
 
-/* Reset default page margin, center everything on screen */
+/* Reset default page margin, center everything on screen, and never scroll */
 body {
     margin: 0;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,22 +28,23 @@ main {
     text-align: center;
 }
 
-/* Style the "Sudoku" heading */
+/* Scale the heading with viewport height so it doesn't eat too much space on short screens */
 h1 {
-    font-weight: 500;
-    color: #222;
-    margin-bottom: 1.5rem;
+  font-weight: 500;
+  color: #222;
+  font-size: clamp(1.1rem, 4vh, 2rem);
+  margin: 0 0 clamp(0.5rem, 2vh, 1.5rem) 0;
 }
 
-/* Lay out 81 cells in a 9x9 grid, sized responsively but capped at 800px */
+/* Lay out 81 cells in a 9x9 grid, sized responsively but capped at 700px */
 .board {
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    grid-template-rows: repeat(9, 1fr);
-    width: min(90vw, 800px);
-    height: min(90vw, 800px);
-    border: 2px solid #222;
-    background: #fff;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  width: var(--board-size);
+  height: var(--board-size);
+  border: 2px solid #222;
+  background: #fff;
 }
 
 /* Center the number inside each cell, give each a thin default border */
@@ -42,16 +52,22 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
+    font-size: clamp(0.9rem, calc(var(--board-size) / 14), 2.5rem);
     color: #222;
     border: 1px solid #ccc;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .given {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
+    font-size: clamp(0.9rem, calc(var(--board-size) / 14), 2.5rem);
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
     color: #222;
     border: 1px solid #ccc;
     font-weight: bold;
@@ -74,7 +90,10 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
+    font-size: clamp(0.9rem, calc(var(--board-size) / 14), 2.5rem);
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
     border: 1px solid #ccc;
     font-style: italic;
     color: #ff0000;
@@ -98,17 +117,18 @@ h1 {
 
 /* Lay out 9 number buttons in a row below the board */
 .number-pad {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  margin-top: 1rem;
+  width: var(--board-size);
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 1%;
+  margin-top: clamp(0.5rem, 2vh, 1rem);
 }
 
 /* Style individual number buttons */
 .num-button {
-  width: 75px;
-  height: 75px;
-  font-size: 1.1rem;
+  width: 100%;
+  aspect-ratio: 1;
+  font-size: clamp(0.9rem, 3vw, 1.5rem);
   border: 1px solid #ccc;
   border-radius: 4px;
   background: #fff;
