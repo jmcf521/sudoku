@@ -134,3 +134,27 @@ h1 {
   background: #fff;
   cursor: pointer;
 }
+
+.options {
+  width: var(--board-size);
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 1%;
+  margin-top: clamp(0.5rem, 2vh, 1rem);
+}
+
+/* Style individual number buttons */
+.options-button {
+  width: 100%;
+  aspect-ratio: 1;
+  font-size: clamp(0.9rem, 3vw, 1.5rem);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.active-mode {
+  background-color: #0bb343;
+  color: #fff;
+}

@@ -5,7 +5,7 @@ function checkRow(board, row, num, index) {
     for (let c = 0; c < 9; c++) {
         const i = row * 9 + c;
         if (board[i] === num && i != index) {
-            console.log("Row invalid. i " + i + " index " + index);
+            //console.log("Row invalid. i " + i + " index " + index);
             return false;
         }
     }
@@ -17,7 +17,7 @@ function checkCol(board, col, num, index) {
     for (let r = 0; r < 9; r++) {
         const i = r * 9 + col;
         if (board[i] === num && i != index) {
-            console.log("Col invalid. i " + i + " index " + index);
+            //console.log("Col invalid. i " + i + " index " + index);
             return false;
         }
     }
@@ -32,7 +32,7 @@ function checkBox(board, row, col, num, index) {
         for (let c = boxCol; c < boxCol + 3; c++) {
             const i = r * 9 + c;
             if (board[i] === num && i != index) {
-                console.log("Box invalid. i " + i + " index " + index);
+                //console.log("Box invalid. i " + i + " index " + index);
                 return false;
             }
         }
@@ -45,7 +45,7 @@ function isValid(board, index, num) {
     const row = Math.floor(index / 9);
     const col = index % 9;
     const valid = checkRow(board, row, num, index) && checkCol(board, col, num, index) && checkBox(board, row, col, num, index);
-    console.log("row " + row + " col " + col + " valid " + valid + " num " + num);
+    //console.log("row " + row + " col " + col + " valid " + valid + " num " + num);
     return valid;
 }
 
