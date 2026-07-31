@@ -95,26 +95,14 @@ board.addEventListener("click", (event) => {
     // Ignore clicks that land on the board but not on an actual cell (e.g. gaps, if any)
     if (!cell.classList.contains("cell")) return;
 
-    removeHighlight()
-
-    if (selectedCell) {
-        clearSelection();
-    }
-
-    // Mark this cell as the new selection
-    selectedCell = cell;
-    cell.classList.add("selected-num");
-
-    // Highlight column and row of selected cell
-    highlightCross();
+    updateSelection(cell);
 });
 
 // Event listener for clicks on buttons
 numberPad.addEventListener("click", (event) => {
-    removeHighlight()
     if (selectedCell) {
         clearSelection();
-}
+    }
     selectedButton = event.target;
     highlightAll(currentBoard, parseInt(event.target.textContent));
 });
@@ -144,6 +132,23 @@ document.addEventListener("keydown", (event) => {
             selectedCell.classList.remove("invalid");
         }
     }
+
+    if (event.key === "ArrowUp") {
+        selectAbove();
+    }
+
+    if (event.key === "ArrowDown") {
+        selectBelow();
+    }
+    
+    if (event.key === "ArrowRight") {
+        selectRight();
+    }
+    
+    if (event.key === "ArrowLeft") {
+        selectLeft();
+    }
+    
 });
 
 // Function to place number
@@ -159,6 +164,19 @@ function placeNumber(num) {
         selectedCell.textContent = num;
         selectedCell.classList.add("invalid");
     }
+}
+
+function updateSelection(cell) {
+    if (selectedCell) {
+        clearSelection();
+    }
+
+    // Mark this cell as the new selection
+    selectedCell = cell;
+    cell.classList.add("selected-num");
+
+    // Highlight column and row of selected cell
+    highlightCross();
 }
 
 // Remove highlights and selected cell
@@ -253,4 +271,32 @@ function removeHighlight() {
         board.children[i].classList.remove("highlighted-given");
         board.children[i].classList.remove("selected-num");
     }
+}
+
+function selectAbove() {
+    const row = Math.floor(parseInt(selectedCell.dataset.index) / 9);
+    const col = parseInt(selectedCell.dataset.index) % 9;
+    const newIndex = 9 * (row - 1) + col;
+    if (newIndex >= 0) updateSelection(board.children[newIndex]);
+}
+
+function selectBelow () {
+    const row = Math.floor(parseInt(selectedCell.dataset.index) / 9);
+    const col = parseInt(selectedCell.dataset.index) % 9;
+    const newIndex = 9 * (row + 1) + col;
+    if (newIndex <= 80) updateSelection(board.children[newIndex]);
+}
+
+function selectLeft() {
+    const row = Math.floor(parseInt(selectedCell.dataset.index) / 9);
+    const col = parseInt(selectedCell.dataset.index) % 9;
+    const newIndex = row * 9 + (col - 1);
+    if (newIndex >= 0 && newIndex % 9 != 8) updateSelection(board.children[newIndex]);
+}
+
+function selectRight() {
+    const row = Math.floor(parseInt(selectedCell.dataset.index) / 9);
+    const col = parseInt(selectedCell.dataset.index) % 9;
+    const newIndex = row * 9 + (col + 1);
+    if (newIndex <= 80 && newIndex % 9 != 0) updateSelection(board.children[newIndex]);
 }
