@@ -1,5 +1,21 @@
 // solver.js — plain functions, work with any board array passed in
 
+
+// const puzzle = [
+//     0,0,0, 9,0,0, 0,0,0,
+//     9,0,0, 0,0,6, 2,4,0,
+//     5,0,0, 0,4,3, 0,1,7,
+
+//     0,6,5, 0,3,0, 0,0,0,
+//     1,0,0, 5,0,9, 0,0,2,
+//     0,0,0, 0,2,0, 1,6,0,
+
+//     6,5,0, 3,8,0, 0,0,9,
+//     0,9,8, 6,0,0, 0,0,3,
+//     0,0,0, 0,0,5, 0,0,0
+// ];
+
+
 // Checks if `num` already exists elsewhere in this row
 function checkRow(board, row, num, index) {
     for (let c = 0; c < 9; c++) {
@@ -68,3 +84,6 @@ function solve(board) {
     }
     return false;
 }
+
+// console.log(puzzle);
+// console.log(solve(puzzle));
