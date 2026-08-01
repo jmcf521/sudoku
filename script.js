@@ -281,7 +281,7 @@ function updateSelection(cell) {
     }
 
     if (selectedOption == optionsLabels[2]) { // && 
-        if (cell.classList.contains("given")) {
+        if (cell.classList.contains("given") || cell.classList.contains("input") ) {
             highlightAll(currentBoard, parseInt(selectedCell.textContent));
             return;
         }
