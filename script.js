@@ -385,7 +385,7 @@ function highlightNum(num) {
 // Highlight cells that are not empty or given
 function highlightInputs() {
     for (let i = 0; i < 81; i++) {
-        if (board.children[i].textContent != "") { // && !board.children[i].classList.contains("given")
+        if (board.children[i].textContent != "" && !board.children[i].classList.contains("given")) { 
             board.children[i].classList.add("highlighted-input");
         }
     }
