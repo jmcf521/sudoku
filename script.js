@@ -157,7 +157,7 @@ options.addEventListener("click", (event) => {
     const optionsButton = event.target;
 
     if (!optionsButton.classList.contains("options-button")) return;
-    
+
     // These are one-shot actions -- do something immediately, don't change mode
     if (label === optionsLabels[optionsLabels.length - 1]) {
         // Clear Cell
@@ -263,11 +263,11 @@ function updateSelection(cell) {
     clearSelection();
     selectedCell = cell;
     cell.classList.add("selected-cell");
-    
+
     if (selectedOption == optionsLabels[0]) {
         highlightCross();
     }
-    
+
     if (selectedOption == optionsLabels[1]) {
         highlightCross();
     }
@@ -277,12 +277,18 @@ function updateSelection(cell) {
             highlightAll(currentBoard, parseInt(selectedCell.textContent));
             return;
         }
-        if (options.children[0].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[0]);
-        if (options.children[1].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[1]);
+        if (options.children[0].textContent === optionsLabels[lastNotation]) {
+            highlightCross();
+            setMode(optionsLabels[lastNotation], options.children[0]);
+        }
+        if (options.children[1].textContent === optionsLabels[lastNotation]) {
+            highlightCross();
+            setMode(optionsLabels[lastNotation], options.children[1]);
+        }
     }
 
     // Highlight column and row of selected cell
-    
+
 }
 
 // Remove highlights and selected cell
