@@ -175,7 +175,13 @@ options.addEventListener("click", (event) => {
         highlightCross();
     }
     if (label === optionsLabels[2]) {
-        if (selectedCell) highlightAll(currentBoard, parseInt(selectedCell.textContent));
+        if (selectedCell) {
+            if (selectedCell.classList.contains("given")) {
+                highlightAll(currentBoard, parseInt(selectedCell.textContent));
+            } else {
+                clearSelection();
+            }
+        }
     }
     setMode(label, event.target);
 });
