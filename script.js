@@ -176,7 +176,7 @@ options.addEventListener("click", (event) => {
     }
     if (label === optionsLabels[2]) {
         if (selectedCell) {
-            if (selectedCell.classList.contains("given")) {
+            if (selectedCell.textContent != "") {
                 highlightAll(currentBoard, parseInt(selectedCell.textContent));
             } else {
                 clearSelection();
@@ -238,6 +238,7 @@ function placeNumber(num) {
         currentBoard[index] = 0;
         selectedCell.textContent = "";
         selectedCell.classList.remove("invalid");
+        selectedCell.classList.remove("input");
         highlightInvalid();
         highlightCross()
         return;
@@ -248,6 +249,7 @@ function placeNumber(num) {
     selectedCell.textContent = num;
     highlightInvalid();
     highlightNum(num);
+    selectedCell.classList.add("input");
 
     const equalArrays = (a, b) =>
         a.length === b.length && a.every((val, index) => val === b[index]);
