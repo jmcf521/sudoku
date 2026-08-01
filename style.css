@@ -75,7 +75,7 @@ h1 {
 }
 
 .input {
-    background-color: #e4e4e4;
+    background-color: #f0f0f0;
 }
 
 .highlighted-cell {
@@ -83,7 +83,7 @@ h1 {
 }
 
 .highlighted-input {
-    background-color: #D6BBF3;
+    background-color: #D8C2F0;
 }
 
 .highlighted-given {
