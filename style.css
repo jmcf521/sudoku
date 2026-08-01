@@ -78,8 +78,12 @@ h1 {
     background-color: #e4e4e4;
 }
 
-.highlighted {
+.highlighted-cell {
     background-color: #ca99ff;
+}
+
+.highlighted-input {
+    background-color: #D6BBF3;
 }
 
 .highlighted-given {

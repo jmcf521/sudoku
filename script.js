@@ -301,7 +301,7 @@ function updateSelection(cell) {
 
 // Remove highlights and selected cell
 function clearSelection() {
-    removeHighlight();
+    highlightRemove();
     if (selectedCell) selectedCell.classList.remove("selected-cell");
     selectedCell = null;
     // selectedButton = null;
@@ -341,8 +341,7 @@ function highlightCross() {
 function highlightRow(selectedRow) {
     for (let c = 0; c < 9; c++) {
         const i = selectedRow * 9 + c;
-        if (!board.children[i].classList.contains("selected-cell")) board.children[i].classList.add("highlighted");
-        if (board.children[i].classList.contains("given")) board.children[i].classList.add("highlighted-given");
+        highlightApply(i)
     }
 }
 
@@ -350,8 +349,7 @@ function highlightRow(selectedRow) {
 function highlightCol(selectedCol) {
     for (let r = 0; r < 9; r++) {
         const i = r * 9 + selectedCol;
-        if (!board.children[i].classList.contains("selected-cell")) board.children[i].classList.add("highlighted");
-        if (board.children[i].classList.contains("given")) board.children[i].classList.add("highlighted-given");
+        highlightApply(i)
     }
 }
 
@@ -362,10 +360,15 @@ function highlightBox(selectedRow, selectedCol) {
     for (let r = boxRow; r < boxRow + 3; r++) {
         for (let c = boxCol; c < boxCol + 3; c++) {
             const i = r * 9 + c;
-            if (!board.children[i].classList.contains("selected-cell")) board.children[i].classList.add("highlighted");
-            if (board.children[i].classList.contains("given")) board.children[i].classList.add("highlighted-given");
+            highlightApply(i)
         }
     }
+}
+
+function highlightApply(i) {
+    if (!board.children[i].classList.contains("selected-cell")) board.children[i].classList.add("highlighted-cell");
+    if (board.children[i].classList.contains("input")) board.children[i].classList.add("highlighted-input");
+    if (board.children[i].classList.contains("given")) board.children[i].classList.add("highlighted-given");
 }
 
 // Highlight all cells matching num
@@ -383,7 +386,7 @@ function highlightNum(num) {
 function highlightInputs() {
     for (let i = 0; i < 81; i++) {
         if (board.children[i].textContent != "") { // && !board.children[i].classList.contains("given")
-            board.children[i].classList.add("highlighted");
+            board.children[i].classList.add("highlighted-input");
         }
     }
 }
@@ -399,9 +402,10 @@ function highlightInvalid() {
 }
 
 //Clear highlighting classes from all cells
-function removeHighlight() {
+function highlightRemove() {
     for (let i = 0; i < 81; i++) {
-        board.children[i].classList.remove("highlighted");
+        board.children[i].classList.remove("highlighted-cell");
+        board.children[i].classList.remove("highlighted-input");
         board.children[i].classList.remove("highlighted-given");
         board.children[i].classList.remove("selected-cell");
     }
