@@ -168,12 +168,10 @@ options.addEventListener("click", (event) => {
     // Everything else is a mode toggle -- Input Num, Input Note, Label (for now)
     if (label === optionsLabels[1]) {
         lastNotation = 1;
-        removeHighlight();
         highlightCross();
     }
     if (label === optionsLabels[0]) {
         lastNotation = 0;
-        removeHighlight();
         highlightCross();
     }
     if (label === optionsLabels[2]) {
