@@ -126,14 +126,13 @@ board.addEventListener("click", (event) => {
 
     // Ignore clicks that land on the board but not on an actual cell (e.g. gaps, if any)
     if (!cell.classList.contains("cell")) return;
-
     updateSelection(cell);
 });
 
 // Event listener for clicks on numberPad
 numberPad.addEventListener("click", (event) => {
     const numButton = event.target;
-    
+
     if (!numButton.classList.contains("num-button")) return;
 
     if (selectedOption === "Label") {
@@ -264,14 +263,14 @@ function placeNumber(num) {
 
 function updateSelection(cell) {
     clearSelection();
-    if (selectedOption == optionsLabels[2]) {
-        if (options.children[0].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[0]);
-        if (options.children[1].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[1]);
-    }
-
-    // Mark this cell as the new selection
     selectedCell = cell;
     cell.classList.add("selected-num");
+    
+    if (selectedOption == optionsLabels[2] && !cell.classList.contains("given")) {
+        if (options.children[0].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[0]);
+        if (options.children[1].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[1]);
+        return;
+    }
 
     // Highlight column and row of selected cell
     highlightCross();
