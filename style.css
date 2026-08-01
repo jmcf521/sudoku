@@ -74,6 +74,10 @@ h1 {
     background-color: #999999;
 }
 
+.input {
+    background-color: #e4e4e4;
+}
+
 .highlighted {
     background-color: #ca99ff;
 }
