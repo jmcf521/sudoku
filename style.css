@@ -54,28 +54,24 @@ h1 {
     justify-content: center;
     font-size: clamp(0.9rem, calc(var(--board-size) / 14), 2.5rem);
     color: #222;
-    border: 1px solid #ccc;
+    border: 1px solid #333;
     min-height: 0;
     min-width: 0;
     overflow: hidden;
 }
 
 .given {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: clamp(0.9rem, calc(var(--board-size) / 14), 2.5rem);
-    min-height: 0;
-    min-width: 0;
-    overflow: hidden;
-    color: #222;
-    border: 1px solid #ccc;
     font-weight: bold;
     background-color: #999999;
 }
 
 .input {
-    background-color: #f0f0f0;
+    background-color: #e5e2e7;
+}
+
+.invalid {
+    font-style: italic;
+    color: #ff0000;
 }
 
 .highlighted-cell {
@@ -83,7 +79,7 @@ h1 {
 }
 
 .highlighted-input {
-    background-color: #D8C2F0;
+    background-color: #D3B4F5;
 }
 
 .highlighted-given {
@@ -94,18 +90,7 @@ h1 {
     background-color: #7b2dcf;
 }
 
-.invalid {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: clamp(0.9rem, calc(var(--board-size) / 14), 2.5rem);
-    min-height: 0;
-    min-width: 0;
-    overflow: hidden;
-    border: 1px solid #ccc;
-    font-style: italic;
-    color: #ff0000;
-}
+
 
 /* Thicken the right border every 3rd column to mark 3x3 box edges */
 .cell:nth-child(3n) {
