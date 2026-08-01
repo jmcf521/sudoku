@@ -266,6 +266,14 @@ function updateSelection(cell) {
     selectedCell = cell;
     cell.classList.add("selected-cell");
     
+    if (selectedOption == optionsLabels[0]) {
+        highlightCross();
+    }
+    
+    if (selectedOption == optionsLabels[1]) {
+        highlightCross();
+    }
+
     if (selectedOption == optionsLabels[2] && !cell.classList.contains("given")) {
         if (options.children[0].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[0]);
         if (options.children[1].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[1]);
@@ -273,7 +281,7 @@ function updateSelection(cell) {
     }
 
     // Highlight column and row of selected cell
-    highlightCross();
+    
 }
 
 // Remove highlights and selected cell
@@ -281,7 +289,7 @@ function clearSelection() {
     removeHighlight();
     if (selectedCell) selectedCell.classList.remove("selected-cell");
     selectedCell = null;
-    selectedButton = null;
+    // selectedButton = null;
 }
 
 // Highlight all boxes that cannot have num and all boxes with same num as selected cell
