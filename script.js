@@ -1,5 +1,5 @@
 // Very simple test puzzle
-const puzzle = [
+const easypuzzle = [
     1, 0, 3, 0, 5, 6, 0, 8, 9,
     4, 5, 0, 7, 8, 0, 1, 2, 0,
     0, 8, 9, 0, 2, 3, 0, 5, 6,
@@ -29,7 +29,7 @@ const hardpuzzle = [
 ]
 
 // Human solvable hard puzzle
-const humanpuzzle = [
+const puzzle = [
     5, 3, 0, 0, 7, 0, 0, 0, 0,
     6, 0, 0, 1, 9, 5, 0, 0, 0,
     0, 9, 8, 0, 0, 0, 0, 6, 0,
