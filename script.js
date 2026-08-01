@@ -272,10 +272,13 @@ function updateSelection(cell) {
         highlightCross();
     }
 
-    if (selectedOption == optionsLabels[2] && !cell.classList.contains("given")) {
+    if (selectedOption == optionsLabels[2]) { // && 
+        if (cell.classList.contains("given")) {
+            highlightAll(currentBoard, parseInt(selectedCell.textContent));
+            return;
+        }
         if (options.children[0].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[0]);
         if (options.children[1].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[1]);
-        return;
     }
 
     // Highlight column and row of selected cell
