@@ -157,7 +157,7 @@ options.addEventListener("click", (event) => {
     const optionsButton = event.target;
 
     if (!optionsButton.classList.contains("options-button")) return;
-    
+
     // These are one-shot actions -- do something immediately, don't change mode
     if (label === optionsLabels[optionsLabels.length - 1]) {
         // Clear Cell
@@ -168,12 +168,10 @@ options.addEventListener("click", (event) => {
     // Everything else is a mode toggle -- Input Num, Input Note, Label (for now)
     if (label === optionsLabels[1]) {
         lastNotation = 1;
-        removeHighlight();
         highlightCross();
     }
     if (label === optionsLabels[0]) {
         lastNotation = 0;
-        removeHighlight();
         highlightCross();
     }
     if (label === optionsLabels[2]) {
@@ -264,24 +262,41 @@ function placeNumber(num) {
 function updateSelection(cell) {
     clearSelection();
     selectedCell = cell;
-    cell.classList.add("selected-num");
-    
-    if (selectedOption == optionsLabels[2] && !cell.classList.contains("given")) {
-        if (options.children[0].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[0]);
-        if (options.children[1].textContent === optionsLabels[lastNotation]) setMode(optionsLabels[lastNotation], options.children[1]);
-        return;
+    cell.classList.add("selected-cell");
+
+    if (selectedOption == optionsLabels[0]) {
+        highlightCross();
+    }
+
+    if (selectedOption == optionsLabels[1]) {
+        highlightCross();
+    }
+
+    if (selectedOption == optionsLabels[2]) { // && 
+        if (cell.classList.contains("given")) {
+            highlightAll(currentBoard, parseInt(selectedCell.textContent));
+            return;
+        }
+        if (options.children[0].textContent === optionsLabels[lastNotation]) {
+            highlightCross();
+            setMode(optionsLabels[lastNotation], options.children[0]);
+        }
+        if (options.children[1].textContent === optionsLabels[lastNotation]) {
+            highlightCross();
+            setMode(optionsLabels[lastNotation], options.children[1]);
+        }
     }
 
     // Highlight column and row of selected cell
-    highlightCross();
+
 }
 
 // Remove highlights and selected cell
 function clearSelection() {
     removeHighlight();
-    if (selectedCell) selectedCell.classList.remove("selected-num");
+    if (selectedCell) selectedCell.classList.remove("selected-cell");
     selectedCell = null;
-    selectedButton = null;
+    // selectedButton = null;
 }
 
 // Highlight all boxes that cannot have num and all boxes with same num as selected cell
@@ -318,7 +333,7 @@ function highlightCross() {
 function highlightRow(selectedRow) {
     for (let c = 0; c < 9; c++) {
         const i = selectedRow * 9 + c;
-        if (!board.children[i].classList.contains("selected-num")) board.children[i].classList.add("highlighted");
+        if (!board.children[i].classList.contains("selected-cell")) board.children[i].classList.add("highlighted");
         if (board.children[i].classList.contains("given")) board.children[i].classList.add("highlighted-given");
     }
 }
@@ -327,7 +342,7 @@ function highlightRow(selectedRow) {
 function highlightCol(selectedCol) {
     for (let r = 0; r < 9; r++) {
         const i = r * 9 + selectedCol;
-        if (!board.children[i].classList.contains("selected-num")) board.children[i].classList.add("highlighted");
+        if (!board.children[i].classList.contains("selected-cell")) board.children[i].classList.add("highlighted");
         if (board.children[i].classList.contains("given")) board.children[i].classList.add("highlighted-given");
     }
 }
@@ -339,7 +354,7 @@ function highlightBox(selectedRow, selectedCol) {
     for (let r = boxRow; r < boxRow + 3; r++) {
         for (let c = boxCol; c < boxCol + 3; c++) {
             const i = r * 9 + c;
-            if (!board.children[i].classList.contains("selected-num")) board.children[i].classList.add("highlighted");
+            if (!board.children[i].classList.contains("selected-cell")) board.children[i].classList.add("highlighted");
             if (board.children[i].classList.contains("given")) board.children[i].classList.add("highlighted-given");
         }
     }
@@ -349,9 +364,9 @@ function highlightBox(selectedRow, selectedCol) {
 function highlightNum(num) {
     for (let i = 0; i < 81; i++) {
         if (parseInt(board.children[i].textContent) == num) {
-            board.children[i].classList.add("selected-num");
+            board.children[i].classList.add("selected-cell");
         } else if (selectedCell != board.children[i]) {
-            board.children[i].classList.remove("selected-num");
+            board.children[i].classList.remove("selected-cell");
         }
     }
 }
@@ -380,7 +395,7 @@ function removeHighlight() {
     for (let i = 0; i < 81; i++) {
         board.children[i].classList.remove("highlighted");
         board.children[i].classList.remove("highlighted-given");
-        board.children[i].classList.remove("selected-num");
+        board.children[i].classList.remove("selected-cell");
     }
 }
 
