@@ -306,6 +306,17 @@ function toggleNote(num) {
             }
         }
     }
+
+    for (let i = 0; i < notes.length; i++) {
+        const cellNotes = notes[i];
+        for (let j = 1; j <= 9; j++) {
+            if (cellNotes.has(j)) {
+                board.children[i].querySelector(`.note[data-num="${j}"]`).classList.remove("hidden");
+            } else {
+                board.children[i].querySelector(`.note[data-num="${j}"]`).classList.add("hidden");
+            }
+        }
+    }
 }
 
 function updateSelection(cell) {
