@@ -80,26 +80,36 @@ let lastNotation = 0;
 
 // Build 81 cells (9x9) and add them to the board in order, left to right, top to bottom
 for (let i = 0; i < 81; i++) {
-    // Create a new empty div for this cell
+    // Create cell
     const cell = document.createElement("div");
-
-    // Give it the "cell" class so style.css can style it
     cell.classList.add("cell");
-
-    // Store this cell's position (0-80) on the element itself, for later use in game logic
     cell.dataset.index = i;
 
-    // Check this cell's position in the puzzle array
-    if (puzzle[i] !== 0) {
-        // Not blank -- show the number inside this div
-        cell.textContent = puzzle[i];
-        cell.classList.add("given")
-    } if (puzzle[i] == 0) {
-        // Show as blank cell
-        cell.textContent = ""
+    // Create div in cell for input
+    const numDiv = document.createElement("div");
+    numDiv.classList.add("cell-value");
+
+    // create div in cell for notes
+    const notesDiv = document.createElement("div");
+    notesDiv.classList.add("cell-notes");
+
+    // Create 9 note spans in notesDiv
+    for (let num = 1; num <= 9; num++) {
+        const note = document.createElement("span");
+        note.classList.add("note");
+        note.dataset.num = num;
+        notesDiv.appendChild(note);
     }
 
-    // Add the finished cell into the board container
+    // Attach both containers to the cell
+    cell.appendChild(numDiv);
+    cell.appendChild(notesDiv);
+
+    if (puzzle[i] !== 0) {
+        numDiv.textContent = puzzle[i];
+        cell.classList.add("given");
+    }
+
     board.appendChild(cell);
 }
 
