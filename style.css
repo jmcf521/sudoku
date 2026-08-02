@@ -58,6 +58,42 @@ h1 {
     min-height: 0;
     min-width: 0;
     overflow: hidden;
+    position: relative;
+}
+
+/* Big number display -- centered, same as before */
+.cell-value {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 3x3 grid of tiny note slots, filling the whole cell */
+.cell-notes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+/* Individual note slot -- tiny text, centered in its own mini-cell */
+.note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    color: #666;
+}
+
+/* Utility class to hide whichever container isn't currently relevant */
+.hidden {
+    display: none;
 }
 
 .given {
