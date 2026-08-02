@@ -133,9 +133,12 @@ for (let num = 0; num < optionsLabels.length; num++) {
 board.addEventListener("click", (event) => {
     // Create variable with clicked element
     let cell = event.target;
-    
+
     if (cell.classList.contains("cell-notes") || cell.classList.contains("cell-value")) {
         cell = cell.parentElement;
+
+    } else if (cell.classList.contains("note")) {
+        cell = cell.parentElement.parentElement;
     }
 
     // Ignore clicks that land on the board but not on an actual cell (e.g. gaps, if any)
@@ -295,7 +298,7 @@ function updateSelection(cell) {
     }
 
     if (selectedOption == optionsLabels[2]) { // && 
-        if (cell.classList.contains("given") || cell.classList.contains("input") ) {
+        if (cell.classList.contains("given") || cell.classList.contains("input")) {
             highlightAll(currentBoard, parseInt(selectedCell.textContent));
             return;
         }
@@ -399,7 +402,7 @@ function highlightNum(num) {
 // Highlight cells that are not empty or given
 function highlightInputs() {
     for (let i = 0; i < 81; i++) {
-        if (board.children[i].textContent != "" && !board.children[i].classList.contains("given")) { 
+        if (board.children[i].textContent != "" && !board.children[i].classList.contains("given")) {
             board.children[i].classList.add("highlighted-input");
         }
     }
