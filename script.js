@@ -165,6 +165,12 @@ numberPad.addEventListener("click", (event) => {
         if (selectedCell) placeNumber(parseInt(event.target.textContent));
     }
 
+    if (selectedOption === "Input Note") {  
+        console.log("note mode");
+        if (selectedCell) toggleNote(parseInt(event.target.textContent));
+
+    }
+
 
 
 });
@@ -282,7 +288,22 @@ function placeNumber(num) {
             board.children[i].classList.remove("solved");
         }
     }
+}
 
+function toggleNote(num) {
+    if (!selectedCell || selectedCell.classList.contains("given")) return;
+
+    const index = parseInt(selectedCell.dataset.index);
+
+    for (let i = 0; i < 81; i++) {
+        if (i === index) {
+            if (notes[i].has(num)) {
+                notes[i].delete(num);
+            } else {
+                notes[i].add(num);
+            }
+        }
+    }
 }
 
 function updateSelection(cell) {
