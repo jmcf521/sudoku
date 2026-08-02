@@ -98,7 +98,9 @@ for (let i = 0; i < 81; i++) {
     for (let num = 1; num <= 9; num++) {
         const note = document.createElement("span");
         note.classList.add("note");
+        note.classList.add("hidden");
         note.dataset.num = num;
+        note.textContent = num;
         notesDiv.appendChild(note);
     }
 
