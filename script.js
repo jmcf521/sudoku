@@ -132,7 +132,11 @@ for (let num = 0; num < optionsLabels.length; num++) {
 // Event listener for clicks in grid boxes
 board.addEventListener("click", (event) => {
     // Create variable with clicked element
-    const cell = event.target;
+    let cell = event.target;
+    
+    if (cell.classList.contains("cell-notes") || cell.classList.contains("cell-value")) {
+        cell = cell.parentElement;
+    }
 
     // Ignore clicks that land on the board but not on an actual cell (e.g. gaps, if any)
     if (!cell.classList.contains("cell")) return;
