@@ -72,6 +72,7 @@ const board = document.getElementById("board");
 const numberPad = document.getElementById("number-pad");
 const options = document.getElementById("options");
 const optionsLabels = ["Input Num", "Input Note", "Label", "Clear Cell",];
+const notes = Array.from({ length: 81 }, () => new Set());
 let selectedCell = null;
 let selectedButton = null;
 let selectedOption = optionsLabels[0];
