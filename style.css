@@ -95,7 +95,7 @@ h1 {
 
 /* Utility class to hide whichever container isn't currently relevant */
 .hidden {
-    display: none;
+    visibility: hidden;
 }
 
 .given {
