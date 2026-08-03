@@ -426,7 +426,7 @@ function highlightApply(i) {
 // Highlight all cells matching num
 function highlightNum(num) {
     for (let i = 0; i < 81; i++) {
-        if (parseInt(board.children[i].textContent) == num) {
+        if (parseInt(board.children[i].textContent) == num && board.children[i].querySelector(".cell-value").textContent != "") {
             board.children[i].classList.add("selected-cell");
         } else if (selectedCell != board.children[i]) {
             board.children[i].classList.remove("selected-cell");
