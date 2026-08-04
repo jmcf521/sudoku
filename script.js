@@ -63,11 +63,11 @@ const puzzle = [
     0, 0, 0,  0, 0, 0,  3, 0, 0, 
     0, 7, 0,  0, 0, 2,  0, 0, 4, 
     6, 0, 0,  0, 7, 9,  0, 0, 0, 
-  
+
     3, 0, 7,  5, 0, 4,  6, 0, 0, 
     0, 0, 2,  0, 0, 0,  5, 0, 0, 
     0, 0, 8,  1, 0, 6,  4, 0, 2, 
-      
+
     0, 0, 0,  2, 8, 0,  0, 0, 9, 
     7, 0, 0,  4, 0, 0,  0, 8, 0, 
     0, 0, 1,  0, 0, 0,  0, 0, 0
@@ -87,10 +87,9 @@ const options = document.getElementById("options");
 const optionsLabels = ["Input Num", "Input Note", "Label", "Clear Cell",];
 const notes = Array.from({ length: 81 }, () => new Set());
 let selectedCell = null;
-let selectedButton = null;
+let selectedNum = null; // Will be used when highlighting num on numberPad
 let selectedOption = optionsLabels[0];
 let lastNotation = 0;
-//let selectedNumber = null;
 
 // Build 81 cells (9x9) and add them to the board in order, left to right, top to bottom
 for (let i = 0; i < 81; i++) {
@@ -166,10 +165,12 @@ board.addEventListener("click", (event) => {
 // Event listener for clicks on numberPad
 numberPad.addEventListener("click", (event) => {
     const numButton = event.target;
+    const num = parseInt(numButton.textContent);
 
     if (!numButton.classList.contains("num-button")) return;
 
-    checkInputMode(parseInt(numButton.textContent));
+    selectedNum = numButton;
+    checkInputMode(num);
 
 
 
@@ -185,7 +186,7 @@ options.addEventListener("click", (event) => {
     // These are one-shot actions -- do something immediately, don't change mode
     if (label === optionsLabels[optionsLabels.length - 1]) {
         // Clear Cell
-        if (selectedCell) clearSelectedCell();
+        if (selectedCell) clearCell();
         return;
     }
 
@@ -229,7 +230,7 @@ document.addEventListener("keydown", (event) => {
 
         // Let Backspace/Delete clear the cell
         if (event.key === "Backspace" || event.key === "Delete") {
-            clearSelectedCell();
+            clearCell();
         }
     }
 
@@ -255,21 +256,21 @@ function checkInputMode(num) {
     if (selectedOption === "Label") {
         console.log("highlight mode");
         clearSelection();
-        selectedButton = numButton;
-        highlightAll(currentBoard, parseInt(num));
+        highlightAll(currentBoard, num);
     }
 
     if (selectedOption === "Input Num") {
         console.log("number mode");
-        clearSelectedCell()
-        if (selectedCell) { placeNumber(parseInt(num)); }
+        clearCell()
+        if (selectedCell) { placeNumber(num); }
 
     }
 
     if (selectedOption === "Input Note") {
         console.log("note mode");
-        if (selectedCell.querySelector(".cell-value").textContent != "") clearSelectedCell();
-        if (selectedCell) toggleNote(parseInt(num));
+        if (!selectedCell) return;
+        if (selectedCell.querySelector(".cell-value").textContent != "") clearCell();
+        toggleNote(num);
     }
 }
 // Function to place number
@@ -281,7 +282,7 @@ function placeNumber(num) {
     // Clear cell and update conflicts
     if (num == "") {
         console.log("num==\"\" in placeNumber");
-        clearSelectedCell();
+        clearCell();
     } else {
         // Update cell with valid num
         currentBoard[index] = num;
@@ -292,7 +293,7 @@ function placeNumber(num) {
     }
 
     const equalArrays = (a, b) =>
-        a.length === b.length && a.every((val, index) => val === b[index]);
+    a.length === b.length && a.every((val, index) => val === b[index]);
 
     if (equalArrays(solvedBoard, currentBoard)) {
         console.log(equalArrays);
@@ -306,7 +307,7 @@ function placeNumber(num) {
     }
 }
 
-function clearSelectedCell() {
+function clearCell() {
 
     if (!selectedCell || selectedCell.classList.contains("given")) return;
 
@@ -327,26 +328,14 @@ function toggleNote(num) {
 
     const index = parseInt(selectedCell.dataset.index);
 
-    for (let i = 0; i < 81; i++) {
-        if (i === index) {
-            if (notes[i].has(num)) {
-                notes[i].delete(num);
-            } else {
-                notes[i].add(num);
-            }
-        }
+    if (notes[index].has(num)) {
+        notes[index].delete(num);
+    } else {
+        notes[index].add(num);
     }
 
-    for (let i = 0; i < notes.length; i++) {
-        const cellNotes = notes[i];
-        for (let j = 1; j <= 9; j++) {
-            if (cellNotes.has(j)) {
-                board.children[i].querySelector(`.note[data-num="${j}"]`).classList.remove("hidden");
-            } else {
-                board.children[i].querySelector(`.note[data-num="${j}"]`).classList.add("hidden");
-            }
-        }
-    }
+    const selectedNote = selectedCell.querySelector(`.note[data-num="${num}"]`);
+    selectedNote.classList.toggle("hidden", !notes[index].has(num));
 }
 
 function updateSelection(cell) {
@@ -386,13 +375,13 @@ function clearSelection() {
     highlightRemove();
     if (selectedCell) selectedCell.classList.remove("selected-cell");
     selectedCell = null;
-    // selectedButton = null;
+    // selectedNum = null;
 }
 
 // Highlight all boxes that cannot have num and all boxes with same num as selected cell
-function highlightAll(board, num) {
+function highlightAll(boardArray, num) {
     for (let i = 0; i < 81; i++) {
-        if (board[i] === num) {
+        if (boardArray[i] === num) {
             const row = Math.floor(i / 9);
             const col = i % 9;
             highlightCol(col);
@@ -456,7 +445,8 @@ function highlightApply(i) {
 // Highlight all cells matching num
 function highlightNum(num) {
     for (let i = 0; i < 81; i++) {
-        if (parseInt(board.children[i].querySelector(".cell-value").textContent) == num && board.children[i].querySelector(".cell-value").textContent != "") {
+        const cellValue = board.children[i].querySelector(".cell-value").textContent;
+        if (parseInt(cellValue) == num && cellValue != "") {
             board.children[i].classList.add("selected-cell");
         } else if (selectedCell != board.children[i]) {
             board.children[i].classList.remove("selected-cell");
