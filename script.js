@@ -248,11 +248,14 @@ function checkInputMode(num) {
 
     if (selectedOption === "Input Num") {
         console.log("number mode");
-        if (selectedCell) placeNumber(parseInt(num));
+        clearSelectedCell()
+        if (selectedCell) { placeNumber(parseInt(num)); }
+
     }
 
     if (selectedOption === "Input Note") {
         console.log("note mode");
+        if (selectedCell.querySelector(".cell-value").textContent != "") clearSelectedCell();
         if (selectedCell) toggleNote(parseInt(num));
     }
 }
