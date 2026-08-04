@@ -214,7 +214,7 @@ options.addEventListener("click", (event) => {
 // Event listener key inputs
 document.addEventListener("keydown", (event) => {
     // Do nothing if no cell or no button is selected
-    if (!selectedCell) return;
+    if (!selectedCell && selectedOption != "Label") return;
 
     // Let esc deselect cell
     if (event.key === "Escape") {
@@ -222,17 +222,17 @@ document.addEventListener("keydown", (event) => {
         return;
     }
 
-    if (!selectedCell.classList.contains("given")) {
+    
         // event.key is the actual character pressed, as a string -- e.g. "5"
-        if (event.key >= "1" && event.key <= "9") {
-            checkInputMode(parseInt(event.key));
-        }
+    if (event.key >= "1" && event.key <= "9") {
+        checkInputMode(parseInt(event.key));
+    }
 
         // Let Backspace/Delete clear the cell
-        if (event.key === "Backspace" || event.key === "Delete") {
-            clearCell();
-        }
+    if (event.key === "Backspace" || event.key === "Delete") {
+        clearCell();
     }
+    
 
     if (event.key === "ArrowUp") {
         selectAbove();
