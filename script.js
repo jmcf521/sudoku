@@ -263,11 +263,14 @@ function checkInputMode(num) {
 
     if (selectedOption === "Input Num") {
         console.log("number mode");
-        if (selectedCell) placeNumber(parseInt(num));
+        clearSelectedCell()
+        if (selectedCell) { placeNumber(parseInt(num)); }
+
     }
 
     if (selectedOption === "Input Note") {
         console.log("note mode");
+        if (selectedCell.querySelector(".cell-value").textContent != "") clearSelectedCell();
         if (selectedCell) toggleNote(parseInt(num));
     }
 }
@@ -296,7 +299,7 @@ function placeNumber(num) {
     if (equalArrays(solvedBoard, currentBoard)) {
         console.log(equalArrays);
         for (let i = 0; i < 81; i++) {
-            if (board.children[i].classList.contains("given")) board.children[i].classList.add("solved");
+            board.children[i].classList.add("solved");
         }
     } else {
         for (let i = 0; i < 81; i++) {
