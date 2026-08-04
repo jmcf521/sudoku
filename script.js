@@ -146,6 +146,7 @@ board.addEventListener("click", (event) => {
 
     // Ignore clicks that land on the board but not on an actual cell (e.g. gaps, if any)
     if (!cell.classList.contains("cell")) return;
+    console.log(cell);
     updateSelection(cell);
 });
 
@@ -167,7 +168,7 @@ numberPad.addEventListener("click", (event) => {
         if (selectedCell) placeNumber(parseInt(numButton.textContent));
     }
 
-    if (selectedOption === "Input Note") {  
+    if (selectedOption === "Input Note") {
         console.log("note mode");
         if (selectedCell) toggleNote(parseInt(numButton.textContent));
 
@@ -187,7 +188,7 @@ options.addEventListener("click", (event) => {
     // These are one-shot actions -- do something immediately, don't change mode
     if (label === optionsLabels[optionsLabels.length - 1]) {
         // Clear Cell
-        if (selectedCell) placeNumber("");
+        if (selectedCell) clearSelectedCell();
         return;
     }
 
@@ -231,7 +232,7 @@ document.addEventListener("keydown", (event) => {
 
         // Let Backspace/Delete clear the cell
         if (event.key === "Backspace" || event.key === "Delete") {
-            placeNumber("");
+            clearSelectedCell();
         }
     }
 
@@ -261,21 +262,16 @@ function placeNumber(num) {
 
     // Clear cell and update conflicts
     if (num == "") {
-        currentBoard[index] = 0;
-        selectedCell.textContent = "";
-        selectedCell.classList.remove("invalid");
-        selectedCell.classList.remove("input");
+        console.log("num==\"\" in placeNumber");
+        clearSelectedCell();
+    } else {
+        // Update cell with valid num
+        currentBoard[index] = num;
+        selectedCell.querySelector(".cell-value").textContent = num;
         highlightInvalid();
-        highlightCross()
-        return;
+        highlightNum(num);
+        selectedCell.classList.add("input");
     }
-
-    // Update cell with valid num
-    currentBoard[index] = num;
-    selectedCell.textContent = num;
-    highlightInvalid();
-    highlightNum(num);
-    selectedCell.classList.add("input");
 
     const equalArrays = (a, b) =>
         a.length === b.length && a.every((val, index) => val === b[index]);
@@ -290,6 +286,22 @@ function placeNumber(num) {
             board.children[i].classList.remove("solved");
         }
     }
+}
+
+function clearSelectedCell() {
+
+    if (!selectedCell || selectedCell.classList.contains("given")) return;
+
+    const index = parseInt(selectedCell.dataset.index);
+
+    currentBoard[index] = 0;
+    selectedCell.querySelector(".cell-value").textContent = "";
+    selectedCell.classList.remove("invalid");
+    selectedCell.classList.remove("input");
+    notes[index].clear();
+    selectedCell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
+    highlightInvalid();
+    highlightCross()
 }
 
 function toggleNote(num) {
