@@ -84,7 +84,7 @@ solve(solvedBoard);
 const board = document.getElementById("board");
 const numberPad = document.getElementById("number-pad");
 const options = document.getElementById("options");
-const optionsLabels = ["Input Num", "Input Note", "Label", "Clear Cell",];
+const optionsLabels = ["Input Num", "Input Note", "Label", "Edit Mode", "Clear Cell",];
 const notes = Array.from({ length: 81 }, () => new Set());
 let selectedCell = null;
 let selectedNum = null; // Will be used when highlighting num on numberPad
