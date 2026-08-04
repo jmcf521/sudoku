@@ -284,7 +284,7 @@ function placeNumber(num) {
     if (equalArrays(solvedBoard, currentBoard)) {
         console.log(equalArrays);
         for (let i = 0; i < 81; i++) {
-            if (board.children[i].classList.contains("given")) board.children[i].classList.add("solved");
+            board.children[i].classList.add("solved");
         }
     } else {
         for (let i = 0; i < 81; i++) {
