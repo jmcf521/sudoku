@@ -158,18 +158,18 @@ numberPad.addEventListener("click", (event) => {
     if (selectedOption === "Label") {
         console.log("highlight mode");
         clearSelection();
-        selectedButton = event.target;
-        highlightAll(currentBoard, parseInt(event.target.textContent));
+        selectedButton = numButton;
+        highlightAll(currentBoard, parseInt(numButton.textContent));
     }
 
     if (selectedOption === "Input Num") {
         console.log("number mode");
-        if (selectedCell) placeNumber(parseInt(event.target.textContent));
+        if (selectedCell) placeNumber(parseInt(numButton.textContent));
     }
 
     if (selectedOption === "Input Note") {  
         console.log("note mode");
-        if (selectedCell) toggleNote(parseInt(event.target.textContent));
+        if (selectedCell) toggleNote(parseInt(numButton.textContent));
 
     }
 
@@ -202,8 +202,8 @@ options.addEventListener("click", (event) => {
     }
     if (label === optionsLabels[2]) {
         if (selectedCell) {
-            if (selectedCell.textContent != "") {
-                highlightAll(currentBoard, parseInt(selectedCell.textContent));
+            if (selectedCell.querySelector(".cell-value").textContent != "") {
+                highlightAll(currentBoard, parseInt(selectedCell.querySelector(".cell-value").textContent));
             } else {
                 clearSelection();
             }
@@ -334,7 +334,7 @@ function updateSelection(cell) {
 
     if (selectedOption == optionsLabels[2]) { // && 
         if (cell.classList.contains("given") || cell.classList.contains("input")) {
-            highlightAll(currentBoard, parseInt(selectedCell.textContent));
+            highlightAll(currentBoard, parseInt(selectedCell.querySelector(".cell-value").textContent));
             return;
         }
         if (options.children[0].textContent === optionsLabels[lastNotation]) {
