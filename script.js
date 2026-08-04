@@ -252,20 +252,25 @@ document.addEventListener("keydown", (event) => {
 
 });
 
+// Check which mode is selected, then call funtion to handle number input
+// Called on num input by number pad or keyboard
 function checkInputMode(num) {
+
+    // If label mode, highlight all invalid cells for num
     if (selectedOption === "Label") {
         console.log("highlight mode");
         clearSelection();
         highlightAll(currentBoard, num);
     }
 
+    // If num mode, input num into selectedCell and clear notes
     if (selectedOption === "Input Num") {
         console.log("number mode");
         clearCell()
         if (selectedCell) { placeNumber(num); }
-
     }
 
+    // If note mode, toggle note for num and clear input num
     if (selectedOption === "Input Note") {
         console.log("note mode");
         if (!selectedCell) return;
@@ -273,7 +278,8 @@ function checkInputMode(num) {
         toggleNote(num);
     }
 }
-// Function to place number
+// Function to place number 
+// Called in checkInputMode for number mode
 function placeNumber(num) {
     if (!selectedCell || selectedCell.classList.contains("given")) return;
 
@@ -307,6 +313,8 @@ function placeNumber(num) {
     }
 }
 
+// Clear notes and input from selected cell
+// Called by backspace, del, clear cell button, and in checkInputMode when inputting number
 function clearCell() {
 
     if (!selectedCell || selectedCell.classList.contains("given")) return;
@@ -323,6 +331,8 @@ function clearCell() {
     highlightCross()
 }
 
+// Hides or shows note for num in selectedCell
+// Called in checkInputMode
 function toggleNote(num) {
     if (!selectedCell || selectedCell.classList.contains("given")) return;
 
@@ -338,6 +348,8 @@ function toggleNote(num) {
     selectedNote.classList.toggle("hidden", !notes[index].has(num));
 }
 
+// Update selectedCell to cell and perform different actions based on selectedOption
+// Called in arrow key functions and when clicking a cell
 function updateSelection(cell) {
     clearSelection();
     selectedCell = cell;
@@ -365,12 +377,10 @@ function updateSelection(cell) {
             setMode(optionsLabels[lastNotation], options.children[1]);
         }
     }
-
-    // Highlight column and row of selected cell
-
 }
 
 // Remove highlights and selected cell
+// Called by esc, swapping to label mode, input value in cell with notes, and input note in cell with value
 function clearSelection() {
     highlightRemove();
     if (selectedCell) selectedCell.classList.remove("selected-cell");
