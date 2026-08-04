@@ -254,6 +254,24 @@ document.addEventListener("keydown", (event) => {
 
 });
 
+function checkInputMode(num) {
+    if (selectedOption === "Label") {
+        console.log("highlight mode");
+        clearSelection();
+        selectedButton = numButton;
+        highlightAll(currentBoard, parseInt(num));
+    }
+
+    if (selectedOption === "Input Num") {
+        console.log("number mode");
+        if (selectedCell) placeNumber(parseInt(num));
+    }
+
+    if (selectedOption === "Input Note") {
+        console.log("note mode");
+        if (selectedCell) toggleNote(parseInt(num));
+    }
+}
 // Function to place number
 function placeNumber(num) {
     if (!selectedCell || selectedCell.classList.contains("given")) return;
