@@ -190,15 +190,19 @@ options.addEventListener("click", (event) => {
         return;
     }
 
-    // Everything else is a mode toggle -- Input Num, Input Note, Label (for now)
-    if (label === optionsLabels[1]) {
-        lastNotation = 1;
-        highlightCross();
-    }
+    // If enable input mode, set lastNotation to input mode, then highlight cross of selectedCell
     if (label === optionsLabels[0]) {
         lastNotation = 0;
         highlightCross();
     }
+
+    // If enable note mode, set lastNotation to note mode, then highlight cross of selectedCell
+    if (label === optionsLabels[1]) {
+        lastNotation = 1;
+        highlightCross();
+    }
+
+    // If enable label mode and given selected, highlight all invalid cells for given, else clear selection
     if (label === optionsLabels[2]) {
         if (selectedCell) {
             if (selectedCell.querySelector(".cell-value").textContent != "") {
@@ -208,13 +212,20 @@ options.addEventListener("click", (event) => {
             }
         }
     }
+
+    // If enable edit mode, deselect cell
+    if (label === optionsLabels[3]) {
+        clearSelection();
+    }
+
+    // Set mode to clicked option
     setMode(label, event.target);
 });
 
 // Event listener key inputs
 document.addEventListener("keydown", (event) => {
     // Do nothing if no cell or no button is selected
-    if (!selectedCell && selectedOption != "Label") return;
+    if (!selectedCell && selectedOption != optionsLabels[2]) return;
 
     // Let esc deselect cell
     if (event.key === "Escape") {
@@ -256,26 +267,32 @@ document.addEventListener("keydown", (event) => {
 // Called on num input by number pad or keyboard
 function checkInputMode(num) {
 
-    // If label mode, highlight all invalid cells for num
-    if (selectedOption === "Label") {
-        console.log("highlight mode");
-        clearSelection();
-        highlightAll(currentBoard, num);
-    }
-
     // If num mode, input num into selectedCell and clear notes
-    if (selectedOption === "Input Num") {
+    if (selectedOption === optionsLabels[0]) {
         console.log("number mode");
         clearCell()
         if (selectedCell) { placeNumber(num); }
     }
 
     // If note mode, toggle note for num and clear input num
-    if (selectedOption === "Input Note") {
+    if (selectedOption === optionsLabels[1]) {
         console.log("note mode");
         if (!selectedCell) return;
         if (selectedCell.querySelector(".cell-value").textContent != "") clearCell();
         toggleNote(num);
+    }
+
+    // If label mode, highlight all invalid cells for num
+    if (selectedOption === optionsLabels[2]) {
+        console.log("highlight mode");
+        clearSelection();
+        highlightAll(currentBoard, num);
+    }
+
+    // If edit mode, input num as given
+    if (selectedOption === optionsLabels[3]) {
+        console.log("edit mode");
+
     }
 }
 // Function to place number 
@@ -355,15 +372,18 @@ function updateSelection(cell) {
     selectedCell = cell;
     cell.classList.add("selected-cell");
 
+    // If input mode, highlight cross of cell
     if (selectedOption == optionsLabels[0]) {
         highlightCross();
     }
 
+    // If note mode, highlight cross of cell
     if (selectedOption == optionsLabels[1]) {
         highlightCross();
     }
 
-    if (selectedOption == optionsLabels[2]) { // && 
+    // If label mode, highlight all if given selected or num input. If empt
+    if (selectedOption == optionsLabels[2]) {
         if (cell.classList.contains("given") || cell.classList.contains("input")) {
             highlightAll(currentBoard, parseInt(selectedCell.querySelector(".cell-value").textContent));
             return;
