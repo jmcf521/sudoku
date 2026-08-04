@@ -156,23 +156,7 @@ numberPad.addEventListener("click", (event) => {
 
     if (!numButton.classList.contains("num-button")) return;
 
-    if (selectedOption === "Label") {
-        console.log("highlight mode");
-        clearSelection();
-        selectedButton = numButton;
-        highlightAll(currentBoard, parseInt(numButton.textContent));
-    }
-
-    if (selectedOption === "Input Num") {
-        console.log("number mode");
-        if (selectedCell) placeNumber(parseInt(numButton.textContent));
-    }
-
-    if (selectedOption === "Input Note") {
-        console.log("note mode");
-        if (selectedCell) toggleNote(parseInt(numButton.textContent));
-
-    }
+    checkInputMode(parseInt(numButton.textContent));
 
 
 
@@ -227,7 +211,7 @@ document.addEventListener("keydown", (event) => {
     if (!selectedCell.classList.contains("given")) {
         // event.key is the actual character pressed, as a string -- e.g. "5"
         if (event.key >= "1" && event.key <= "9") {
-            placeNumber(parseInt(event.key));
+            checkInputMode(parseInt(event.key));
         }
 
         // Let Backspace/Delete clear the cell
