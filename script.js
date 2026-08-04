@@ -72,7 +72,6 @@ const board = document.getElementById("board");
 const numberPad = document.getElementById("number-pad");
 const options = document.getElementById("options");
 const optionsLabels = ["Input Num", "Input Note", "Label", "Clear Cell",];
-const notes = Array.from({ length: 81 }, () => new Set());
 let selectedCell = null;
 let selectedButton = null;
 let selectedOption = optionsLabels[0];
@@ -81,38 +80,26 @@ let lastNotation = 0;
 
 // Build 81 cells (9x9) and add them to the board in order, left to right, top to bottom
 for (let i = 0; i < 81; i++) {
-    // Create cell
+    // Create a new empty div for this cell
     const cell = document.createElement("div");
+
+    // Give it the "cell" class so style.css can style it
     cell.classList.add("cell");
+
+    // Store this cell's position (0-80) on the element itself, for later use in game logic
     cell.dataset.index = i;
 
-    // Create div in cell for input
-    const numDiv = document.createElement("div");
-    numDiv.classList.add("cell-value");
-
-    // create div in cell for notes
-    const notesDiv = document.createElement("div");
-    notesDiv.classList.add("cell-notes");
-
-    // Create 9 note spans in notesDiv
-    for (let num = 1; num <= 9; num++) {
-        const note = document.createElement("span");
-        note.classList.add("note");
-        note.classList.add("hidden");
-        note.dataset.num = num;
-        note.textContent = num;
-        notesDiv.appendChild(note);
-    }
-
-    // Attach both containers to the cell
-    cell.appendChild(numDiv);
-    cell.appendChild(notesDiv);
-
+    // Check this cell's position in the puzzle array
     if (puzzle[i] !== 0) {
-        numDiv.textContent = puzzle[i];
-        cell.classList.add("given");
+        // Not blank -- show the number inside this div
+        cell.textContent = puzzle[i];
+        cell.classList.add("given")
+    } if (puzzle[i] == 0) {
+        // Show as blank cell
+        cell.textContent = ""
     }
 
+    // Add the finished cell into the board container
     board.appendChild(cell);
 }
 
@@ -135,18 +122,10 @@ for (let num = 0; num < optionsLabels.length; num++) {
 // Event listener for clicks in grid boxes
 board.addEventListener("click", (event) => {
     // Create variable with clicked element
-    let cell = event.target;
-
-    if (cell.classList.contains("cell-notes") || cell.classList.contains("cell-value")) {
-        cell = cell.parentElement;
-
-    } else if (cell.classList.contains("note")) {
-        cell = cell.parentElement.parentElement;
-    }
+    const cell = event.target;
 
     // Ignore clicks that land on the board but not on an actual cell (e.g. gaps, if any)
     if (!cell.classList.contains("cell")) return;
-    console.log(cell);
     updateSelection(cell);
 });
 
@@ -156,7 +135,17 @@ numberPad.addEventListener("click", (event) => {
 
     if (!numButton.classList.contains("num-button")) return;
 
-    checkInputMode(parseInt(numButton.textContent));
+    if (selectedOption === "Label") {
+        console.log("highlight mode");
+        clearSelection();
+        selectedButton = event.target;
+        highlightAll(currentBoard, parseInt(event.target.textContent));
+    }
+
+    if (selectedOption === "Input Num") {
+        console.log("number mode");
+        if (selectedCell) placeNumber(parseInt(event.target.textContent));
+    }
 
 
 
@@ -172,7 +161,7 @@ options.addEventListener("click", (event) => {
     // These are one-shot actions -- do something immediately, don't change mode
     if (label === optionsLabels[optionsLabels.length - 1]) {
         // Clear Cell
-        if (selectedCell) clearSelectedCell();
+        if (selectedCell) placeNumber("");
         return;
     }
 
@@ -187,8 +176,8 @@ options.addEventListener("click", (event) => {
     }
     if (label === optionsLabels[2]) {
         if (selectedCell) {
-            if (selectedCell.querySelector(".cell-value").textContent != "") {
-                highlightAll(currentBoard, parseInt(selectedCell.querySelector(".cell-value").textContent));
+            if (selectedCell.textContent != "") {
+                highlightAll(currentBoard, parseInt(selectedCell.textContent));
             } else {
                 clearSelection();
             }
@@ -211,12 +200,12 @@ document.addEventListener("keydown", (event) => {
     if (!selectedCell.classList.contains("given")) {
         // event.key is the actual character pressed, as a string -- e.g. "5"
         if (event.key >= "1" && event.key <= "9") {
-            checkInputMode(parseInt(event.key));
+            placeNumber(parseInt(event.key));
         }
 
         // Let Backspace/Delete clear the cell
         if (event.key === "Backspace" || event.key === "Delete") {
-            clearSelectedCell();
+            placeNumber("");
         }
     }
 
@@ -238,24 +227,6 @@ document.addEventListener("keydown", (event) => {
 
 });
 
-function checkInputMode(num) {
-    if (selectedOption === "Label") {
-        console.log("highlight mode");
-        clearSelection();
-        selectedButton = numButton;
-        highlightAll(currentBoard, parseInt(num));
-    }
-
-    if (selectedOption === "Input Num") {
-        console.log("number mode");
-        if (selectedCell) placeNumber(parseInt(num));
-    }
-
-    if (selectedOption === "Input Note") {
-        console.log("note mode");
-        if (selectedCell) toggleNote(parseInt(num));
-    }
-}
 // Function to place number
 function placeNumber(num) {
     if (!selectedCell || selectedCell.classList.contains("given")) return;
@@ -264,16 +235,21 @@ function placeNumber(num) {
 
     // Clear cell and update conflicts
     if (num == "") {
-        console.log("num==\"\" in placeNumber");
-        clearSelectedCell();
-    } else {
-        // Update cell with valid num
-        currentBoard[index] = num;
-        selectedCell.querySelector(".cell-value").textContent = num;
+        currentBoard[index] = 0;
+        selectedCell.textContent = "";
+        selectedCell.classList.remove("invalid");
+        selectedCell.classList.remove("input");
         highlightInvalid();
-        highlightNum(num);
-        selectedCell.classList.add("input");
+        highlightCross()
+        return;
     }
+
+    // Update cell with valid num
+    currentBoard[index] = num;
+    selectedCell.textContent = num;
+    highlightInvalid();
+    highlightNum(num);
+    selectedCell.classList.add("input");
 
     const equalArrays = (a, b) =>
         a.length === b.length && a.every((val, index) => val === b[index]);
@@ -288,49 +264,7 @@ function placeNumber(num) {
             board.children[i].classList.remove("solved");
         }
     }
-}
 
-function clearSelectedCell() {
-
-    if (!selectedCell || selectedCell.classList.contains("given")) return;
-
-    const index = parseInt(selectedCell.dataset.index);
-
-    currentBoard[index] = 0;
-    selectedCell.querySelector(".cell-value").textContent = "";
-    selectedCell.classList.remove("invalid");
-    selectedCell.classList.remove("input");
-    notes[index].clear();
-    selectedCell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
-    highlightInvalid();
-    highlightCross()
-}
-
-function toggleNote(num) {
-    if (!selectedCell || selectedCell.classList.contains("given")) return;
-
-    const index = parseInt(selectedCell.dataset.index);
-
-    for (let i = 0; i < 81; i++) {
-        if (i === index) {
-            if (notes[i].has(num)) {
-                notes[i].delete(num);
-            } else {
-                notes[i].add(num);
-            }
-        }
-    }
-
-    for (let i = 0; i < notes.length; i++) {
-        const cellNotes = notes[i];
-        for (let j = 1; j <= 9; j++) {
-            if (cellNotes.has(j)) {
-                board.children[i].querySelector(`.note[data-num="${j}"]`).classList.remove("hidden");
-            } else {
-                board.children[i].querySelector(`.note[data-num="${j}"]`).classList.add("hidden");
-            }
-        }
-    }
 }
 
 function updateSelection(cell) {
@@ -347,8 +281,8 @@ function updateSelection(cell) {
     }
 
     if (selectedOption == optionsLabels[2]) { // && 
-        if (cell.classList.contains("given") || cell.classList.contains("input")) {
-            highlightAll(currentBoard, parseInt(selectedCell.querySelector(".cell-value").textContent));
+        if (cell.classList.contains("given") || cell.classList.contains("input") ) {
+            highlightAll(currentBoard, parseInt(selectedCell.textContent));
             return;
         }
         if (options.children[0].textContent === optionsLabels[lastNotation]) {
@@ -440,7 +374,7 @@ function highlightApply(i) {
 // Highlight all cells matching num
 function highlightNum(num) {
     for (let i = 0; i < 81; i++) {
-        if (parseInt(board.children[i].textContent) == num && board.children[i].querySelector(".cell-value").textContent != "") {
+        if (parseInt(board.children[i].textContent) == num) {
             board.children[i].classList.add("selected-cell");
         } else if (selectedCell != board.children[i]) {
             board.children[i].classList.remove("selected-cell");
@@ -451,7 +385,7 @@ function highlightNum(num) {
 // Highlight cells that are not empty or given
 function highlightInputs() {
     for (let i = 0; i < 81; i++) {
-        if (board.children[i].textContent != "" && !board.children[i].classList.contains("given")) {
+        if (board.children[i].textContent != "" && !board.children[i].classList.contains("given")) { 
             board.children[i].classList.add("highlighted-input");
         }
     }
