@@ -141,6 +141,7 @@ for (let num = 0; num < optionsLabels.length; num++) {
     button.classList.add("options-button");
     if (num == 0) button.classList.add("active-mode");
     button.textContent = optionsLabels[num];
+    button.dataset.label = optionsLabels[num];
     options.appendChild(button);
 }
 
@@ -178,14 +179,14 @@ numberPad.addEventListener("click", (event) => {
 
 // Event listener for clicks on options
 options.addEventListener("click", (event) => {
-    const label = event.target.textContent;
     const optionsButton = event.target;
+    const label = optionsButton.dataset.label;
+    
 
     if (!optionsButton.classList.contains("options-button")) return;
 
-    // These are one-shot actions -- do something immediately, don't change mode
+    // Clear cell
     if (label === optionsLabels[optionsLabels.length - 1]) {
-        // Clear Cell
         if (selectedCell) clearCell();
         return;
     }
@@ -209,19 +210,23 @@ options.addEventListener("click", (event) => {
             cell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
             notes[cell.dataset.index].clear();
         });
-
+        removeHighlight();
+        if (selectedCell) selectedCell.classList.add("selected-cell");
+        highlightCross();
         return;
     }
 
     // If enable input mode, set lastNotation to input mode, then highlight cross of selectedCell
     if (label === optionsLabels[0]) {
         lastNotation = 0;
+        removeHighlight();
         highlightCross();
     }
 
     // If enable note mode, set lastNotation to note mode, then highlight cross of selectedCell
     if (label === optionsLabels[1]) {
         lastNotation = 1;
+        removeHighlight();
         highlightCross();
     }
 
@@ -237,9 +242,25 @@ options.addEventListener("click", (event) => {
     }
 
     // If enable edit mode, highlight only selected cell
-    if (label === optionsLabels[3]) {
-        highlightRemove();
+    if (label === optionsLabels[3] && selectedOption !== optionsLabels[3]) {
+        removeHighlight();
+        optionsButton.textContent = "Check Grid";
         if (selectedCell) selectedCell.classList.add("selected-cell");
+    }
+    
+    if (label === optionsLabels[3] && selectedOption === optionsLabels[3]) {
+        if (checkSolvable()) {
+            finalizePuzzle();
+            optionsButton.textContent = "Edit Mode";
+            highlightCross();
+            setMode(optionsLabels[0], options.children[0]);
+            return;
+            
+        } else {
+            optionsButton.classList.add("invalid");
+            console.log("Grid is not solvable");
+            return;
+        }
     }
 
     // Set mode to clicked option
@@ -360,6 +381,8 @@ function placeGiven(num) {
     const index = parseInt(selectedCell.dataset.index);
 
     puzzle[index] = num;
+    currentBoard[index] = num;
+    solvedBoard[index] = num;
     selectedCell.querySelector(".cell-value").textContent = num;
     highlightInvalid();
     highlightNum(num);
@@ -376,15 +399,20 @@ function clearCell() {
 
     const index = parseInt(selectedCell.dataset.index);
 
+    if (selectedOption === optionsLabels[3]) {
+        puzzle[index] = 0;
+        selectedCell.classList.remove("given");
+        solvedBoard[index] = 0;
+    }
+    
     currentBoard[index] = 0;
     selectedCell.querySelector(".cell-value").textContent = "";
     selectedCell.classList.remove("invalid");
     selectedCell.classList.remove("input");
-    selectedCell.classList.remove("given");
     notes[index].clear();
     selectedCell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
     highlightInvalid();
-    highlightCross()
+    highlightCross();
 }
 
 // Hides or shows note for num in selectedCell
@@ -427,11 +455,11 @@ function updateSelection(cell) {
             highlightAll(currentBoard, parseInt(selectedCell.querySelector(".cell-value").textContent));
             return;
         }
-        if (options.children[0].textContent === optionsLabels[lastNotation]) {
+        if (options.children[0].dataset.label === optionsLabels[lastNotation]) {
             highlightCross();
             setMode(optionsLabels[lastNotation], options.children[0]);
         }
-        if (options.children[1].textContent === optionsLabels[lastNotation]) {
+        if (options.children[1].dataset.label === optionsLabels[lastNotation]) {
             highlightCross();
             setMode(optionsLabels[lastNotation], options.children[1]);
         }
@@ -441,7 +469,7 @@ function updateSelection(cell) {
 // Remove highlights and selected cell
 // Called by esc, swapping to label mode, input value in cell with notes, and input note in cell with value
 function clearSelection() {
-    highlightRemove();
+    removeHighlight();
     if (selectedCell) selectedCell.classList.remove("selected-cell");
     selectedCell = null;
     // selectedNum = null;
@@ -543,7 +571,7 @@ function highlightInvalid() {
 }
 
 //Clear highlighting classes from all cells
-function highlightRemove() {
+function removeHighlight() {
     for (let i = 0; i < 81; i++) {
         board.children[i].classList.remove("highlighted-cell");
         board.children[i].classList.remove("highlighted-input");
@@ -589,4 +617,30 @@ function setMode(mode, button) {
 
     selectedOption = mode;
     button.classList.add("active-mode");
+}
+
+function checkSolvable() {
+    // Count how many cells currently have a value
+    const clueCount = currentBoard.filter(val => val !== 0).length;
+
+    // Skip solve() check on boards with too few clues
+    if (clueCount < 17) {
+        options.children[3].classList.remove("invalid");
+        return false;
+    }
+
+    const solvable = isSolvable(currentBoard);
+    options.children[3].classList.toggle("invalid", !solvable);
+    return solvable;
+}
+
+function isSolvable(boardArray) {
+    if (board.querySelectorAll(".invalid").length > 0) return false;
+    return solve([...boardArray]);
+}
+
+function finalizePuzzle() {
+    solvedBoard.length = 0;
+    solvedBoard.push(...puzzle);
+    solve(solvedBoard); // fine to mutate here -- this is the one intentional, final solve
 }

@@ -107,11 +107,6 @@ h1 {
     background-color: #e5e2e7;
 }
 
-.invalid {
-    font-style: italic;
-    color: #ff0000;
-}
-
 .highlighted-cell {
     background-color: #ca99ff;
 }
@@ -188,6 +183,11 @@ h1 {
 .active-mode {
   background-color: #0bb343;
   color: #fff;
+}
+
+.invalid {
+    font-style: italic;
+    color: #ff0000;
 }
 
 .solved {
