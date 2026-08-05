@@ -210,6 +210,9 @@ options.addEventListener("click", (event) => {
             cell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
             notes[cell.dataset.index].clear();
         });
+        highlightRemove();
+        if (selectedCell) selectedCell.classList.add("selected-cell");
+        highlightCross();
         return;
     }
 
