@@ -619,11 +619,12 @@ function checkSolvable() {
     // Skip solve() check on boards with too few clues
     if (clueCount < 17) {
         options.children[3].classList.remove("invalid");
-        return;
+        return false;
     }
 
     const solvable = isSolvable(currentBoard);
     options.children[3].classList.toggle("invalid", !solvable);
+    return solvable;
 }
 
 function isSolvable(boardArray) {
