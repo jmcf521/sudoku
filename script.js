@@ -185,7 +185,6 @@ options.addEventListener("click", (event) => {
 
     // These are one-shot actions -- do something immediately, don't change mode
     if (label === optionsLabels[optionsLabels.length - 1]) {
-        // Clear Cell
         if (selectedCell) clearCell();
         return;
     }
