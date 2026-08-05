@@ -360,6 +360,7 @@ function placeGiven(num) {
     const index = parseInt(selectedCell.dataset.index);
 
     puzzle[index] = num;
+    currentBoard[index] = num;
     selectedCell.querySelector(".cell-value").textContent = num;
     highlightInvalid();
     highlightNum(num);
