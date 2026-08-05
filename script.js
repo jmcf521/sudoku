@@ -337,6 +337,8 @@ function placeGiven(num) {
 
     puzzle[index] = num;
     selectedCell.querySelector(".cell-value").textContent = num;
+    highlightInvalid();
+    highlightNum(num);
     selectedCell.classList.add("given");
 }
 
