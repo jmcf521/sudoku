@@ -246,6 +246,7 @@ options.addEventListener("click", (event) => {
     
     if (label === "Check Grid") {
         if (checkSolvable()) {
+            finalizePuzzle();
             optionsButton.textContent = "Edit Mode";
             highlightCross();
             setMode(optionsLabels[0], options.children[0]);
