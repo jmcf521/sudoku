@@ -210,7 +210,7 @@ options.addEventListener("click", (event) => {
             cell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
             notes[cell.dataset.index].clear();
         });
-        highlightRemove();
+        removeHighlight();
         if (selectedCell) selectedCell.classList.add("selected-cell");
         highlightCross();
         return;
@@ -219,14 +219,14 @@ options.addEventListener("click", (event) => {
     // If enable input mode, set lastNotation to input mode, then highlight cross of selectedCell
     if (label === optionsLabels[0]) {
         lastNotation = 0;
-        highlightRemove();
+        removeHighlight();
         highlightCross();
     }
 
     // If enable note mode, set lastNotation to note mode, then highlight cross of selectedCell
     if (label === optionsLabels[1]) {
         lastNotation = 1;
-        highlightRemove();
+        removeHighlight();
         highlightCross();
     }
 
@@ -243,7 +243,7 @@ options.addEventListener("click", (event) => {
 
     // If enable edit mode, highlight only selected cell
     if (label === optionsLabels[3] && selectedOption !== optionsLabels[3]) {
-        highlightRemove();
+        removeHighlight();
         optionsButton.textContent = "Check Grid";
         if (selectedCell) selectedCell.classList.add("selected-cell");
     }
@@ -469,7 +469,7 @@ function updateSelection(cell) {
 // Remove highlights and selected cell
 // Called by esc, swapping to label mode, input value in cell with notes, and input note in cell with value
 function clearSelection() {
-    highlightRemove();
+    removeHighlight();
     if (selectedCell) selectedCell.classList.remove("selected-cell");
     selectedCell = null;
     // selectedNum = null;
@@ -571,7 +571,7 @@ function highlightInvalid() {
 }
 
 //Clear highlighting classes from all cells
-function highlightRemove() {
+function removeHighlight() {
     for (let i = 0; i < 81; i++) {
         board.children[i].classList.remove("highlighted-cell");
         board.children[i].classList.remove("highlighted-input");
