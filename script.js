@@ -395,7 +395,7 @@ function placeGiven(num) {
 function clearCell() {
 
     if (!selectedCell) return;
-    // if (selectedCell.classList.contains("given") && selectedOption != optionsLabels[3]) return;
+    if (selectedCell.classList.contains("given") && selectedOption != optionsLabels[3]) return;
 
     const index = parseInt(selectedCell.dataset.index);
 
@@ -404,7 +404,7 @@ function clearCell() {
         selectedCell.classList.remove("given");
         solvedBoard[index] = 0;
     }
-
+    
     currentBoard[index] = 0;
     selectedCell.querySelector(".cell-value").textContent = "";
     selectedCell.classList.remove("invalid");
