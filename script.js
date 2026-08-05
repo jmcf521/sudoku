@@ -238,9 +238,19 @@ options.addEventListener("click", (event) => {
     }
 
     // If enable edit mode, highlight only selected cell
-    if (label === optionsLabels[3]) {
+    if (label === "Edit Mode") {
         highlightRemove();
+        optionsButton.textContent = "Check Grid";
         if (selectedCell) selectedCell.classList.add("selected-cell");
+    }
+    
+    if (label === "Check Grid") {
+        if (checkSolvable()) {
+            optionsButton.textContent = "Edit Mode";
+            
+        } else {
+            console.log("Grid is not solvable");
+        }
     }
 
     // Set mode to clicked option
