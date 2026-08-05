@@ -215,12 +215,14 @@ options.addEventListener("click", (event) => {
     // If enable input mode, set lastNotation to input mode, then highlight cross of selectedCell
     if (label === optionsLabels[0]) {
         lastNotation = 0;
+        highlightRemove();
         highlightCross();
     }
 
     // If enable note mode, set lastNotation to note mode, then highlight cross of selectedCell
     if (label === optionsLabels[1]) {
         lastNotation = 1;
+        highlightRemove();
         highlightCross();
     }
 
