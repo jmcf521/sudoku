@@ -179,6 +179,7 @@ numberPad.addEventListener("click", (event) => {
 
 // Event listener for clicks on options
 options.addEventListener("click", (event) => {
+    const optionsButton = event.target;
     const label = optionsButton.dataset.label;
     const optionsButton = event.target;
 
