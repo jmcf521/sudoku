@@ -187,7 +187,6 @@ options.addEventListener("click", (event) => {
     if (label === optionsLabels[optionsLabels.length - 1]) {
         // Clear Cell
         if (selectedCell) clearCell();
-        checkSolvable();
         return;
     }
 
@@ -210,7 +209,6 @@ options.addEventListener("click", (event) => {
             cell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
             notes[cell.dataset.index].clear();
         });
-        checkSolvable();
         return;
     }
 
@@ -277,7 +275,6 @@ document.addEventListener("keydown", (event) => {
     // Let Backspace/Delete clear the cell
     if (event.key === "Backspace" || event.key === "Delete") {
         clearCell();
-        checkSolvable();
     }
 
 
@@ -379,7 +376,6 @@ function placeGiven(num) {
     highlightNum(num);
     selectedCell.classList.add("given");
     selectedCell.classList.remove("input");
-    checkSolvable();
 }
 
 // Clear notes and input from selected cell
@@ -405,7 +401,6 @@ function clearCell() {
     selectedCell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
     highlightInvalid();
     highlightCross();
-    checkSolvable();
 }
 
 // Hides or shows note for num in selectedCell
