@@ -253,6 +253,7 @@ options.addEventListener("click", (event) => {
             
         } else {
             console.log("Grid is not solvable");
+            return;
         }
     }
 
