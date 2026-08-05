@@ -84,7 +84,7 @@ solve(solvedBoard);
 const board = document.getElementById("board");
 const numberPad = document.getElementById("number-pad");
 const options = document.getElementById("options");
-const optionsLabels = ["Input Num", "Input Note", "Label", "Edit Mode", "Clear Cell",];
+const optionsLabels = ["Input Num", "Input Note", "Label", "Edit Mode", "Clear Board", "Clear Cell"];
 const notes = Array.from({ length: 81 }, () => new Set());
 let selectedCell = null;
 let selectedNum = null; // Will be used when highlighting num on numberPad
@@ -190,6 +190,29 @@ options.addEventListener("click", (event) => {
         return;
     }
 
+    if (label === optionsLabels[4]) {
+        if (selectedOption === optionsLabels[3]) {
+            puzzle.fill(0);
+            board.querySelectorAll(".cell").forEach(cell => {
+                cell.querySelector(".cell-value").textContent = "";
+                cell.classList.remove("given");
+            });
+        }
+        currentBoard.length = 0;
+        currentBoard.push(...puzzle);
+        board.querySelectorAll(".cell").forEach((cell) => {
+            if (!cell.classList.contains("given")) {
+                cell.querySelector(".cell-value").textContent = "";
+                cell.classList.remove("input");
+            }
+            cell.classList.remove("invalid");
+            cell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
+            notes[cell.dataset.index].clear();
+        });
+
+        return;
+    }
+
     // If enable input mode, set lastNotation to input mode, then highlight cross of selectedCell
     if (label === optionsLabels[0]) {
         lastNotation = 0;
@@ -213,9 +236,10 @@ options.addEventListener("click", (event) => {
         }
     }
 
-    // If enable edit mode, deselect cell
+    // If enable edit mode, highlight only selected cell
     if (label === optionsLabels[3]) {
-        clearSelection();
+        highlightRemove();
+        if (selectedCell) selectedCell.classList.add("selected-cell");
     }
 
     // Set mode to clicked option
