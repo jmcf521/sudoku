@@ -617,6 +617,7 @@ function checkSolvable() {
 }
 
 function isSolvable(boardArray) {
+    if (board.querySelectorAll(".invalid").length > 0) return false;
     return solve([...boardArray]);
 }
 
