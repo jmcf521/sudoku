@@ -60,17 +60,17 @@ const humanpuzzle = [
 
 // ans34
 const puzzle = [
-    0, 0, 0,  0, 0, 0,  3, 0, 0, 
-    0, 7, 0,  0, 0, 2,  0, 0, 4, 
-    6, 0, 0,  0, 7, 9,  0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 3, 0, 0,
+    0, 7, 0, 0, 0, 2, 0, 0, 4,
+    6, 0, 0, 0, 7, 9, 0, 0, 0,
 
-    3, 0, 7,  5, 0, 4,  6, 0, 0, 
-    0, 0, 2,  0, 0, 0,  5, 0, 0, 
-    0, 0, 8,  1, 0, 6,  4, 0, 2, 
+    3, 0, 7, 5, 0, 4, 6, 0, 0,
+    0, 0, 2, 0, 0, 0, 5, 0, 0,
+    0, 0, 8, 1, 0, 6, 4, 0, 2,
 
-    0, 0, 0,  2, 8, 0,  0, 0, 9, 
-    7, 0, 0,  4, 0, 0,  0, 8, 0, 
-    0, 0, 1,  0, 0, 0,  0, 0, 0
+    0, 0, 0, 2, 8, 0, 0, 0, 9,
+    7, 0, 0, 4, 0, 0, 0, 8, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0
 ];
 
 // Copy of current board so original does not need to be modified
@@ -93,20 +93,20 @@ let lastNotation = 0;
 
 // Build 81 cells (9x9) and add them to the board in order, left to right, top to bottom
 for (let i = 0; i < 81; i++) {
-// Create cell
+    // Create cell
     const cell = document.createElement("div");
     cell.classList.add("cell");
     cell.dataset.index = i;
 
-// Create div in cell for input
+    // Create div in cell for input
     const numDiv = document.createElement("div");
     numDiv.classList.add("cell-value");
 
-// create div in cell for notes
+    // create div in cell for notes
     const notesDiv = document.createElement("div");
     notesDiv.classList.add("cell-notes");
 
-// Create 9 note spans in notesDiv
+    // Create 9 note spans in notesDiv
     for (let num = 1; num <= 9; num++) {
         const note = document.createElement("span");
         note.classList.add("note");
@@ -116,7 +116,7 @@ for (let i = 0; i < 81; i++) {
         notesDiv.appendChild(note);
     }
 
-// Attach both containers to the cell
+    // Attach both containers to the cell
     cell.appendChild(numDiv);
     cell.appendChild(notesDiv);
 
@@ -146,7 +146,7 @@ for (let num = 0; num < optionsLabels.length; num++) {
 
 // Event listener for clicks in grid boxes
 board.addEventListener("click", (event) => {
-// Create variable with clicked element
+    // Create variable with clicked element
     let cell = event.target;
 
     if (cell.classList.contains("cell-notes") || cell.classList.contains("cell-value")) {
@@ -156,7 +156,7 @@ board.addEventListener("click", (event) => {
         cell = cell.parentElement.parentElement;
     }
 
-// Ignore clicks that land on the board but not on an actual cell (e.g. gaps, if any)
+    // Ignore clicks that land on the board but not on an actual cell (e.g. gaps, if any)
     if (!cell.classList.contains("cell")) return;
     console.log(cell);
     updateSelection(cell);
@@ -183,26 +183,26 @@ options.addEventListener("click", (event) => {
 
     if (!optionsButton.classList.contains("options-button")) return;
 
-// These are one-shot actions -- do something immediately, don't change mode
+    // These are one-shot actions -- do something immediately, don't change mode
     if (label === optionsLabels[optionsLabels.length - 1]) {
-    // Clear Cell
+        // Clear Cell
         if (selectedCell) clearCell();
         return;
     }
 
-// If enable input mode, set lastNotation to input mode, then highlight cross of selectedCell
+    // If enable input mode, set lastNotation to input mode, then highlight cross of selectedCell
     if (label === optionsLabels[0]) {
         lastNotation = 0;
         highlightCross();
     }
 
-// If enable note mode, set lastNotation to note mode, then highlight cross of selectedCell
+    // If enable note mode, set lastNotation to note mode, then highlight cross of selectedCell
     if (label === optionsLabels[1]) {
         lastNotation = 1;
         highlightCross();
     }
 
-// If enable label mode and given selected, highlight all invalid cells for given, else clear selection
+    // If enable label mode and given selected, highlight all invalid cells for given, else clear selection
     if (label === optionsLabels[2]) {
         if (selectedCell) {
             if (selectedCell.querySelector(".cell-value").textContent != "") {
@@ -213,21 +213,21 @@ options.addEventListener("click", (event) => {
         }
     }
 
-// If enable edit mode, deselect cell
+    // If enable edit mode, deselect cell
     if (label === optionsLabels[3]) {
         clearSelection();
     }
 
-// Set mode to clicked option
+    // Set mode to clicked option
     setMode(label, event.target);
 });
 
 // Event listener key inputs
 document.addEventListener("keydown", (event) => {
-// Do nothing if no cell or no button is selected
+    // Do nothing if no cell or no button is selected
     if (!selectedCell && selectedOption != optionsLabels[2]) return;
 
-// Let esc deselect cell
+    // Let esc deselect cell
     if (event.key === "Escape") {
         clearSelection();
         return;
@@ -267,14 +267,14 @@ document.addEventListener("keydown", (event) => {
 // Called on num input by number pad or keyboard
 function checkInputMode(num) {
 
-// If num mode, input num into selectedCell and clear notes
+    // If num mode, input num into selectedCell and clear notes
     if (selectedOption === optionsLabels[0]) {
         console.log("number mode");
         clearCell()
         if (selectedCell) placeNumber(num);
     }
 
-// If note mode, toggle note for num and clear input num
+    // If note mode, toggle note for num and clear input num
     if (selectedOption === optionsLabels[1]) {
         console.log("note mode");
         if (!selectedCell) return;
@@ -282,14 +282,14 @@ function checkInputMode(num) {
         toggleNote(num);
     }
 
-// If label mode, highlight all invalid cells for num
+    // If label mode, highlight all invalid cells for num
     if (selectedOption === optionsLabels[2]) {
         console.log("highlight mode");
         clearSelection();
         highlightAll(currentBoard, num);
     }
 
-// If edit mode, input num as given
+    // If edit mode, input num as given
     if (selectedOption === optionsLabels[3]) {
         console.log("edit mode");
         if (selectedCell) placeGiven(num);
@@ -302,12 +302,12 @@ function placeNumber(num) {
 
     const index = parseInt(selectedCell.dataset.index);
 
-// Clear cell and update conflicts
+    // Clear cell and update conflicts
     if (num == "") {
         console.log("num==\"\" in placeNumber");
         clearCell();
     } else {
-    // Update cell with valid num
+        // Update cell with valid num
         currentBoard[index] = num;
         selectedCell.querySelector(".cell-value").textContent = num;
         highlightInvalid();
@@ -316,7 +316,7 @@ function placeNumber(num) {
     }
 
     const equalArrays = (a, b) =>
-    a.length === b.length && a.every((val, index) => val === b[index]);
+        a.length === b.length && a.every((val, index) => val === b[index]);
 
     if (equalArrays(solvedBoard, currentBoard)) {
         console.log(equalArrays);
@@ -387,17 +387,17 @@ function updateSelection(cell) {
     selectedCell = cell;
     cell.classList.add("selected-cell");
 
-// If input mode, highlight cross of cell
+    // If input mode, highlight cross of cell
     if (selectedOption == optionsLabels[0]) {
         highlightCross();
     }
 
-// If note mode, highlight cross of cell
+    // If note mode, highlight cross of cell
     if (selectedOption == optionsLabels[1]) {
         highlightCross();
     }
 
-// If label mode, highlight all if given selected or num input. If empt
+    // If label mode, highlight all if given selected or num input. If empt
     if (selectedOption == optionsLabels[2]) {
         if (cell.classList.contains("given") || cell.classList.contains("input")) {
             highlightAll(currentBoard, parseInt(selectedCell.querySelector(".cell-value").textContent));
@@ -420,7 +420,7 @@ function clearSelection() {
     highlightRemove();
     if (selectedCell) selectedCell.classList.remove("selected-cell");
     selectedCell = null;
-// selectedNum = null;
+    // selectedNum = null;
 }
 
 // Highlight all boxes that cannot have num and all boxes with same num as selected cell
@@ -558,7 +558,7 @@ function selectRight() {
 
 // Sets the current input mode and updates which button looks "active"
 function setMode(mode, button) {
-// Remove the active look from whichever button was previously active
+    // Remove the active look from whichever button was previously active
     document.querySelectorAll(".options-button").forEach(btn => {
         btn.classList.remove("active-mode");
     });
