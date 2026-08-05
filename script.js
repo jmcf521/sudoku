@@ -340,6 +340,7 @@ function placeGiven(num) {
     highlightInvalid();
     highlightNum(num);
     selectedCell.classList.add("given");
+    selectedCell.classList.remove("input");
 }
 
 // Clear notes and input from selected cell
