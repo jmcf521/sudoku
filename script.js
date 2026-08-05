@@ -210,7 +210,6 @@ options.addEventListener("click", (event) => {
             notes[cell.dataset.index].clear();
         });
         removeHighlight();
-        if (selectedCell) selectedCell.classList.add("selected-cell");
         highlightCross();
         return;
     }
@@ -502,6 +501,7 @@ function highlightCross() {
     highlightRow(selectedRow);
     highlightCol(selectedCol);
     highlightNum(givenNum);
+    selectedCell.classList.add("selected-cell");
 }
 
 // Highlight selectedRow
