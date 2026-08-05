@@ -181,7 +181,6 @@ numberPad.addEventListener("click", (event) => {
 options.addEventListener("click", (event) => {
     const optionsButton = event.target;
     const label = optionsButton.dataset.label;
-    
 
     if (!optionsButton.classList.contains("options-button")) return;
 
