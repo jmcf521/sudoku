@@ -187,6 +187,7 @@ options.addEventListener("click", (event) => {
     if (label === optionsLabels[optionsLabels.length - 1]) {
         // Clear Cell
         if (selectedCell) clearCell();
+        checkSolvable();
         return;
     }
 
@@ -209,7 +210,7 @@ options.addEventListener("click", (event) => {
             cell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
             notes[cell.dataset.index].clear();
         });
-
+        checkSolvable();
         return;
     }
 
@@ -266,6 +267,7 @@ document.addEventListener("keydown", (event) => {
     // Let Backspace/Delete clear the cell
     if (event.key === "Backspace" || event.key === "Delete") {
         clearCell();
+        checkSolvable();
     }
 
 
@@ -361,11 +363,13 @@ function placeGiven(num) {
 
     puzzle[index] = num;
     currentBoard[index] = num;
+    solvedBoard[index] = num;
     selectedCell.querySelector(".cell-value").textContent = num;
     highlightInvalid();
     highlightNum(num);
     selectedCell.classList.add("given");
     selectedCell.classList.remove("input");
+    checkSolvable();
 }
 
 // Clear notes and input from selected cell
@@ -373,7 +377,7 @@ function placeGiven(num) {
 function clearCell() {
 
     if (!selectedCell) return;
-    if (selectedCell.classList.contains("given") && selectedOption != optionsLabels[3]) return;
+    // if (selectedCell.classList.contains("given") && selectedOption != optionsLabels[3]) return;
 
     const index = parseInt(selectedCell.dataset.index);
 
@@ -390,7 +394,8 @@ function clearCell() {
     notes[index].clear();
     selectedCell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
     highlightInvalid();
-    highlightCross()
+    highlightCross();
+    checkSolvable();
 }
 
 // Hides or shows note for num in selectedCell
@@ -595,4 +600,19 @@ function setMode(mode, button) {
 
     selectedOption = mode;
     button.classList.add("active-mode");
+}
+
+function checkSolvable() {
+    const solvable = isSolvable(currentBoard);
+    options.children[3].classList.toggle("invalid", !solvable);
+}
+
+function isSolvable(boardArray) {
+    return solve([...boardArray]);
+}
+
+function finalizePuzzle() {
+    solvedBoard.length = 0;
+    solvedBoard.push(...puzzle);
+    solve(solvedBoard); // fine to mutate here -- this is the one intentional, final solve
 }
