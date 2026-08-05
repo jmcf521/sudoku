@@ -603,6 +603,15 @@ function setMode(mode, button) {
 }
 
 function checkSolvable() {
+    // Count how many cells currently have a value
+    const clueCount = currentBoard.filter(val => val !== 0).length;
+
+    // Skip solve() check on boards with too few clues
+    if (clueCount < 17) {
+        options.children[3].classList.remove("invalid");
+        return;
+    }
+
     const solvable = isSolvable(currentBoard);
     options.children[3].classList.toggle("invalid", !solvable);
 }
