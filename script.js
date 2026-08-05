@@ -377,11 +377,16 @@ function clearCell() {
 
     const index = parseInt(selectedCell.dataset.index);
 
+    if (selectedOption === optionsLabels[3]) {
+        puzzle[index] = 0;
+        selectedCell.classList.remove("given");
+        solvedBoard[index] = 0;
+    }
+
     currentBoard[index] = 0;
     selectedCell.querySelector(".cell-value").textContent = "";
     selectedCell.classList.remove("invalid");
     selectedCell.classList.remove("input");
-    selectedCell.classList.remove("given");
     notes[index].clear();
     selectedCell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
     highlightInvalid();
