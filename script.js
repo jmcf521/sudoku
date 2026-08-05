@@ -213,9 +213,10 @@ options.addEventListener("click", (event) => {
         }
     }
 
-    // If enable edit mode, deselect cell
+    // If enable edit mode, highlight only selected cell
     if (label === optionsLabels[3]) {
-        clearSelection();
+        highlightRemove();
+        if (selectedCell) selectedCell.classList.add("selected-cell");
     }
 
     // Set mode to clicked option
