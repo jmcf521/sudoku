@@ -292,7 +292,7 @@ function checkInputMode(num) {
 // If edit mode, input num as given
     if (selectedOption === optionsLabels[3]) {
         console.log("edit mode");
-        if (selectedCell) placeNumber(num);
+        if (selectedCell) placeGiven(num);
     }
 }
 // Function to place number 
@@ -328,6 +328,16 @@ function placeNumber(num) {
             board.children[i].classList.remove("solved");
         }
     }
+}
+
+function placeGiven(num) {
+    if (!selectedCell) return;
+
+    const index = parseInt(selectedCell.dataset.index);
+
+    puzzle[index] = num;
+    selectedCell.querySelector(".cell-value").textContent = num;
+    selectedCell.classList.add("given");
 }
 
 // Clear notes and input from selected cell
