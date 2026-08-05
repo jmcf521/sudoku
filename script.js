@@ -344,7 +344,8 @@ function placeGiven(num) {
 // Called by backspace, del, clear cell button, and in checkInputMode when inputting number
 function clearCell() {
 
-    if (!selectedCell || selectedCell.classList.contains("given")) return;
+    if (!selectedCell) return;
+    if (selectedCell.classList.contains("given") && selectedOption != optionsLabels[3]) return;
 
     const index = parseInt(selectedCell.dataset.index);
 
@@ -352,6 +353,7 @@ function clearCell() {
     selectedCell.querySelector(".cell-value").textContent = "";
     selectedCell.classList.remove("invalid");
     selectedCell.classList.remove("input");
+    selectedCell.classList.remove("given");
     notes[index].clear();
     selectedCell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
     highlightInvalid();
