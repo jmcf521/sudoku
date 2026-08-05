@@ -179,7 +179,7 @@ numberPad.addEventListener("click", (event) => {
 
 // Event listener for clicks on options
 options.addEventListener("click", (event) => {
-    const label = event.target.textContent;
+    const label = optionsButton.dataset.label;
     const optionsButton = event.target;
 
     if (!optionsButton.classList.contains("options-button")) return;
@@ -238,13 +238,13 @@ options.addEventListener("click", (event) => {
     }
 
     // If enable edit mode, highlight only selected cell
-    if (label === "Edit Mode") {
+    if (label === optionsLabels[3] && selectedOption !== optionsLabels[3]) {
         highlightRemove();
         optionsButton.textContent = "Check Grid";
         if (selectedCell) selectedCell.classList.add("selected-cell");
     }
     
-    if (label === "Check Grid") {
+    if (label === optionsLabels[3] && selectedOption === optionsLabels[3]) {
         if (checkSolvable()) {
             finalizePuzzle();
             optionsButton.textContent = "Edit Mode";
