@@ -509,7 +509,7 @@ function highlightInputs() {
 function highlightInvalid() {
     for (let i = 0; i < 81; i++) {
         board.children[i].classList.remove("invalid");
-        if (!isValid(currentBoard, i, parseInt(currentBoard[i]))) {
+        if (!isValid(currentBoard, i, parseInt(currentBoard[i])) && currentBoard[i] != 0) {
             board.children[i].classList.add("invalid");
         }
     }
