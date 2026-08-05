@@ -183,7 +183,7 @@ options.addEventListener("click", (event) => {
 
     if (!optionsButton.classList.contains("options-button")) return;
 
-    // These are one-shot actions -- do something immediately, don't change mode
+    // Clear cell
     if (label === optionsLabels[optionsLabels.length - 1]) {
         if (selectedCell) clearCell();
         return;
