@@ -141,6 +141,7 @@ for (let num = 0; num < optionsLabels.length; num++) {
     button.classList.add("options-button");
     if (num == 0) button.classList.add("active-mode");
     button.textContent = optionsLabels[num];
+    button.dataset.label = optionsLabels[num];
     options.appendChild(button);
 }
 
