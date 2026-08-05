@@ -451,11 +451,11 @@ function updateSelection(cell) {
             highlightAll(currentBoard, parseInt(selectedCell.querySelector(".cell-value").textContent));
             return;
         }
-        if (options.children[0].textContent === optionsLabels[lastNotation]) {
+        if (options.children[0].dataset.label === optionsLabels[lastNotation]) {
             highlightCross();
             setMode(optionsLabels[lastNotation], options.children[0]);
         }
-        if (options.children[1].textContent === optionsLabels[lastNotation]) {
+        if (options.children[1].dataset.label === optionsLabels[lastNotation]) {
             highlightCross();
             setMode(optionsLabels[lastNotation], options.children[1]);
         }
