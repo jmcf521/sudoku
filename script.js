@@ -169,7 +169,7 @@ numberPad.addEventListener("click", (event) => {
     const num = parseInt(numButton.textContent);
 
     if (!numButton.classList.contains("num-button")) return;
-
+    selectedNum?.classList.remove("chosen-number");
     selectedNum = numButton;
     checkInputMode(num);
 
