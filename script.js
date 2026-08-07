@@ -673,3 +673,12 @@ function finalizePuzzle() {
     solvedBoard.push(...puzzle);
     solve(solvedBoard); // fine to mutate here -- this is the one intentional, final solve
 }
+
+function saveSnapshot() {
+    const boardCopy = [...currentBoard];
+    const notesCopy = notes.map(set => new Set(set));
+    const selectedCellIndex = selectedCell ? parseInt(selectedCell.dataset.index) : null;
+
+    console.log("Saving snapshot of current board and notes");
+    history.push({ board: boardCopy, notes: notesCopy, selectedCellIndex: selectedCellIndex });
+}
