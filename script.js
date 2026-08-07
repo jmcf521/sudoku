@@ -84,8 +84,9 @@ solve(solvedBoard);
 const board = document.getElementById("board");
 const numberPad = document.getElementById("number-pad");
 const options = document.getElementById("options");
-const optionsLabels = ["Input Num", "Input Note", "Label", "Edit Mode", "Clear Board", "Clear Cell"];
+const optionsLabels = ["Input Num", "Input Note", "Label", "Edit Mode", "Clear Board", "Undo", "Clear Cell"];
 const notes = Array.from({ length: 81 }, () => new Set());
+const history = [];
 let selectedCell = null;
 let selectedNum = null; // Will be used when highlighting num on numberPad
 let selectedOption = optionsLabels[0];
@@ -126,6 +127,7 @@ for (let i = 0; i < 81; i++) {
     }
 
     board.appendChild(cell);
+    saveSnapshot();
 }
 
 // Build numberpad under numbers
@@ -187,6 +189,11 @@ options.addEventListener("click", (event) => {
     // Clear cell
     if (label === optionsLabels[optionsLabels.length - 1]) {
         if (selectedCell) clearCell();
+        return;
+    }
+
+    if (label === optionsLabels[5]) {
+        undo();
         return;
     }
 
@@ -336,8 +343,8 @@ function checkInputMode(num) {
     // If num mode, input num into selectedCell and clear notes
     if (selectedOption === optionsLabels[0]) {
         console.log("number mode");
-        clearCell()
         if (selectedCell) {
+            selectedCell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
             selectedNum?.classList.add("chosen-number");
             placeNumber(num);
         }
@@ -382,6 +389,7 @@ function placeNumber(num) {
         highlightInvalid();
         highlightNum(num);
         selectedCell.classList.add("input");
+        saveSnapshot();
     }
 
     const equalArrays = (a, b) =>
@@ -428,7 +436,7 @@ function clearCell() {
         selectedCell.classList.remove("given");
         solvedBoard[index] = 0;
     }
-    
+
     currentBoard[index] = 0;
     selectedCell.querySelector(".cell-value").textContent = "";
     selectedCell.classList.remove("invalid");
@@ -437,6 +445,7 @@ function clearCell() {
     selectedCell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
     highlightInvalid();
     highlightCross();
+    saveSnapshot();
 }
 
 // Hides or shows note for num in selectedCell
@@ -454,6 +463,7 @@ function toggleNote(num) {
 
     const selectedNote = selectedCell.querySelector(`.note[data-num="${num}"]`);
     selectedNote.classList.toggle("hidden", !notes[index].has(num));
+    saveSnapshot();
 }
 
 // Update selectedCell to cell and perform different actions based on selectedOption
@@ -672,4 +682,52 @@ function finalizePuzzle() {
     solvedBoard.length = 0;
     solvedBoard.push(...puzzle);
     solve(solvedBoard); // fine to mutate here -- this is the one intentional, final solve
+}
+
+function saveSnapshot() {
+    const boardCopy = [...currentBoard];
+    const notesCopy = notes.map(set => new Set(set));
+    const selectedCellIndex = selectedCell ? parseInt(selectedCell.dataset.index) : null;
+
+    console.log("Saving snapshot of current board and notes");
+    history.push({ board: boardCopy, notes: notesCopy, selectedCellIndex: selectedCellIndex });
+}
+
+function undo() {
+    if (history.length <= 1) return;
+    console.log("Undoing last action");
+
+    history.pop();
+    const lastState = history[history.length - 1];
+
+    updateState(lastState.board, lastState.notes, lastState.selectedCellIndex);
+}
+
+function updateState(boardArray, notesArray, selectedCellIndex) {
+    currentBoard.length = 0;
+    currentBoard.push(...boardArray);
+
+    for (let i = 0; i < 81; i++) {
+        notes[i] = new Set(notesArray[i]);
+        const cell = board.children[i];
+        if (cell.classList.contains("given")) continue;
+
+        const value = currentBoard[i];
+        cell.querySelector(".cell-value").textContent = value === 0 ? "" : value;
+        cell.classList.toggle("input", value !== 0);
+
+        for (let num = 1; num <= 9; num++) {
+            const noteEl = cell.querySelector(`.note[data-num="${num}"]`);
+            noteEl.classList.toggle("hidden", !notes[i].has(num));
+        }
+        
+        if (value !== 0) cell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
+
+        if (selectedCellIndex !== null) {
+            updateSelection(board.children[selectedCellIndex]);
+        } else {
+            clearSelection();
+        }
+        highlightInvalid();
+    }
 }
