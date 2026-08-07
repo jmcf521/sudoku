@@ -241,7 +241,7 @@ options.addEventListener("click", (event) => {
         }
     }
 
-    // If enable edit mode, highlight only selected cell
+    // If enable edit mode, highlight only selected cell and make all other options buttons invalid
     if (label === optionsLabels[3] && selectedOption !== optionsLabels[3]) {
         removeHighlight();
         optionsButton.textContent = "Check Grid";
