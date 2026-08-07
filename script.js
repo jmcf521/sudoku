@@ -127,6 +127,7 @@ for (let i = 0; i < 81; i++) {
     }
 
     board.appendChild(cell);
+    saveSnapshot();
 }
 
 // Build numberpad under numbers
