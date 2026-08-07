@@ -343,8 +343,8 @@ function checkInputMode(num) {
     // If num mode, input num into selectedCell and clear notes
     if (selectedOption === optionsLabels[0]) {
         console.log("number mode");
-        clearCell()
         if (selectedCell) {
+            selectedCell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
             selectedNum?.classList.add("chosen-number");
             placeNumber(num);
         }
