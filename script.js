@@ -214,6 +214,8 @@ options.addEventListener("click", (event) => {
         return;
     }
 
+    if (options.children[3].textContent === "Check Grid" && label !== optionsLabels[3]) return;
+
     // If enable input mode, set lastNotation to input mode, then highlight cross of selectedCell
     if (label === optionsLabels[0]) {
         lastNotation = 0;
