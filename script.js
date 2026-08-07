@@ -686,3 +686,44 @@ function saveSnapshot() {
     console.log("Saving snapshot of current board and notes");
     history.push({ board: boardCopy, notes: notesCopy, selectedCellIndex: selectedCellIndex });
 }
+
+function undo() {
+    if (history.length === 0) return;
+    console.log("Undoing last action");
+    
+    history.pop();
+    const lastState = history[history.length - 1];
+    
+    if (!lastState) {
+        console.log("No previous state to undo to");
+        return;
+    }
+
+    currentBoard.length = 0;
+    currentBoard.push(...lastState.board);
+    
+    for (let i = 0; i < 81; i++) {
+        notes[i] = new Set(lastState.notes[i]);
+    }
+
+    for (let i = 0; i < 81; i++) {
+        const cell = board.children[i];
+        if (cell.classList.contains("given")) continue;
+
+        const value = currentBoard[i];
+        cell.querySelector(".cell-value").textContent = value === 0 ? "" : value;
+        cell.classList.toggle("input", value !== 0);
+
+        for (let num = 1; num <= 9; num++) {
+            const noteEl = cell.querySelector(`.note[data-num="${num}"]`);
+            noteEl.classList.toggle("hidden", !notes[i].has(num));
+        }
+    }
+
+    if (lastState.selectedCellIndex !== null) {
+        updateSelection(board.children[lastState.selectedCellIndex]);
+    } else {
+        clearSelection();
+    }
+    highlightInvalid();
+}
