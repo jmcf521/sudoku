@@ -544,6 +544,9 @@ function highlightApply(i) {
 
 // Highlight all cells matching num
 function highlightNum(num) {
+    selectedNum?.classList.remove("chosen-number");
+    selectedNum = numberPad.children[num - 1];
+    selectedNum?.classList.add("chosen-number");
     for (let i = 0; i < 81; i++) {
         const cellValue = board.children[i].querySelector(".cell-value").textContent;
         if (parseInt(cellValue) == num && cellValue != "") {
