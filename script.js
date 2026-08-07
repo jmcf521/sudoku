@@ -315,7 +315,7 @@ function checkInputMode(num) {
         console.log("number mode");
         clearCell()
         if (selectedCell) {
-            selectedNum.classList.add("chosen-number");
+            selectedNum?.classList.add("chosen-number");
             placeNumber(num);
         }
     }
