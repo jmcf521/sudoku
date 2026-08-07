@@ -471,7 +471,8 @@ function updateSelection(cell) {
 // Called by esc, swapping to label mode, input value in cell with notes, and input note in cell with value
 function clearSelection() {
     removeHighlight();
-    if (selectedCell) selectedCell.classList.remove("selected-cell");
+    selectedNum?.classList.remove("chosen-number");
+    selectedCell?.classList.remove("selected-cell");
     selectedCell = null;
     // selectedNum = null;
 }
