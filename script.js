@@ -382,6 +382,7 @@ function placeNumber(num) {
         highlightInvalid();
         highlightNum(num);
         selectedCell.classList.add("input");
+        saveSnapshot();
     }
 
     const equalArrays = (a, b) =>
@@ -428,7 +429,7 @@ function clearCell() {
         selectedCell.classList.remove("given");
         solvedBoard[index] = 0;
     }
-    
+
     currentBoard[index] = 0;
     selectedCell.querySelector(".cell-value").textContent = "";
     selectedCell.classList.remove("invalid");
@@ -437,6 +438,7 @@ function clearCell() {
     selectedCell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
     highlightInvalid();
     highlightCross();
+    saveSnapshot();
 }
 
 // Hides or shows note for num in selectedCell
@@ -454,6 +456,7 @@ function toggleNote(num) {
 
     const selectedNote = selectedCell.querySelector(`.note[data-num="${num}"]`);
     selectedNote.classList.toggle("hidden", !notes[index].has(num));
+    saveSnapshot();
 }
 
 // Update selectedCell to cell and perform different actions based on selectedOption
