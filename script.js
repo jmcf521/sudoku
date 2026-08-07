@@ -720,12 +720,14 @@ function updateState(boardArray, notesArray, selectedCellIndex) {
             const noteEl = cell.querySelector(`.note[data-num="${num}"]`);
             noteEl.classList.toggle("hidden", !notes[i].has(num));
         }
-    }
+        
+        if (value !== 0) cell.querySelectorAll(".note").forEach(note => note.classList.add("hidden"));
 
-    if (lastState.selectedCellIndex !== null) {
-        updateSelection(board.children[lastState.selectedCellIndex]);
-    } else {
-        clearSelection();
+        if (selectedCellIndex !== null) {
+            updateSelection(board.children[selectedCellIndex]);
+        } else {
+            clearSelection();
+        }
+        highlightInvalid();
     }
-    highlightInvalid();
 }
