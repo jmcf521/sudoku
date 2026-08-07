@@ -191,6 +191,11 @@ options.addEventListener("click", (event) => {
         return;
     }
 
+    if (label === optionsLabels[5]) {
+        undo();
+        return;
+    }
+
     if (label === optionsLabels[4]) {
         if (selectedOption === optionsLabels[3]) {
             puzzle.fill(0);
