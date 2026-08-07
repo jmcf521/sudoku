@@ -703,6 +703,7 @@ function undo() {
     updateState(lastState.board, lastState.notes, lastState.selectedCellIndex);
 }
 
+function updateState(boardArray, notesArray, selectedCellIndex) {
     currentBoard.length = 0;
     currentBoard.push(...lastState.board);
     
