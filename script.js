@@ -245,7 +245,10 @@ options.addEventListener("click", (event) => {
     if (label === optionsLabels[3] && selectedOption !== optionsLabels[3]) {
         removeHighlight();
         optionsButton.textContent = "Check Grid";
-        if (selectedCell) selectedCell.classList.add("selected-cell");
+        selectedCell?.classList.add("selected-cell");
+        for (let i = 0; i < 3; i++) {
+            options.children[i].classList.add("invalid-option");
+        }
     }
 
     // If click check grid button, check if grid is solvable, if so finalize puzzle and set mode to input num, else highlight check grid button red
