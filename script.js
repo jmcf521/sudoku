@@ -472,9 +472,9 @@ function updateSelection(cell) {
 function clearSelection() {
     removeHighlight();
     selectedNum?.classList.remove("chosen-number");
+    selectedNum = null;
     selectedCell?.classList.remove("selected-cell");
     selectedCell = null;
-    // selectedNum = null;
 }
 
 // Highlight all boxes that cannot have num and all boxes with same num as selected cell
