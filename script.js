@@ -705,13 +705,10 @@ function undo() {
 
 function updateState(boardArray, notesArray, selectedCellIndex) {
     currentBoard.length = 0;
-    currentBoard.push(...lastState.board);
-    
-    for (let i = 0; i < 81; i++) {
-        notes[i] = new Set(lastState.notes[i]);
-    }
+    currentBoard.push(...boardArray);
 
     for (let i = 0; i < 81; i++) {
+        notes[i] = new Set(notesArray[i]);
         const cell = board.children[i];
         if (cell.classList.contains("given")) continue;
 
