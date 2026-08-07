@@ -314,7 +314,10 @@ function checkInputMode(num) {
     if (selectedOption === optionsLabels[0]) {
         console.log("number mode");
         clearCell()
-        if (selectedCell) placeNumber(num);
+        if (selectedCell) {
+            selectedNum.classList.add("chosen-number");
+            placeNumber(num);
+        }
     }
 
     // If note mode, toggle note for num and clear input num
