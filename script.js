@@ -694,16 +694,14 @@ function saveSnapshot() {
 }
 
 function undo() {
-    if (history.length === 0) return;
+    if (history.length <= 1) return;
     console.log("Undoing last action");
-    
+
     history.pop();
     const lastState = history[history.length - 1];
-    
-    if (!lastState) {
-        console.log("No previous state to undo to");
-        return;
-    }
+
+    updateState(lastState.board, lastState.notes, lastState.selectedCellIndex);
+}
 
     currentBoard.length = 0;
     currentBoard.push(...lastState.board);
