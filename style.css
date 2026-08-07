@@ -195,6 +195,10 @@ h1 {
     color: #ff0000;
 }
 
+.invalid-option {
+    background-color: #ff0000;
+}
+
 .solved {
     background-color: #0bb343;
 }
