@@ -306,6 +306,21 @@ document.addEventListener("keydown", (event) => {
 
 });
 
+window.addEventListener("keydown", (event) => {
+    if (event.key === " ") {
+        event.preventDefault();
+        toggleInputMode();
+    }
+});
+
+function toggleInputMode() {
+    if (selectedOption === optionsLabels[0]) {
+        setMode(optionsLabels[1], options.children[1]);
+    } else if (selectedOption === optionsLabels[1]) {
+        setMode(optionsLabels[0], options.children[0]);
+    }
+}
+
 // Check which mode is selected, then call funtion to handle number input
 // Called on num input by number pad or keyboard
 function checkInputMode(num) {
