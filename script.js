@@ -84,7 +84,7 @@ solve(solvedBoard);
 const board = document.getElementById("board");
 const numberPad = document.getElementById("number-pad");
 const options = document.getElementById("options");
-const optionsLabels = ["Input Num", "Input Note", "Label", "Edit Mode", "Clear Board", "Clear Cell"];
+const optionsLabels = ["Input Num", "Input Note", "Label", "Edit Mode", "Clear Board", "Undo", "Clear Cell"];
 const notes = Array.from({ length: 81 }, () => new Set());
 const history = [];
 let selectedCell = null;
