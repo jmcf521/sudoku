@@ -86,6 +86,7 @@ const numberPad = document.getElementById("number-pad");
 const options = document.getElementById("options");
 const optionsLabels = ["Input Num", "Input Note", "Label", "Edit Mode", "Clear Board", "Clear Cell"];
 const notes = Array.from({ length: 81 }, () => new Set());
+const history = [];
 let selectedCell = null;
 let selectedNum = null; // Will be used when highlighting num on numberPad
 let selectedOption = optionsLabels[0];
