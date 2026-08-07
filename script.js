@@ -257,9 +257,11 @@ options.addEventListener("click", (event) => {
             finalizePuzzle();
             optionsButton.textContent = "Edit Mode";
             highlightCross();
+            for (let i = 0; i < 3; i++) {
+                options.children[i].classList.remove("invalid-option");
+            }
             setMode(optionsLabels[0], options.children[0]);
             return;
-            
         } else {
             optionsButton.classList.add("invalid");
             console.log("Grid is not solvable");
