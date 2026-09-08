@@ -389,6 +389,22 @@ function placeNumber(num) {
         highlightInvalid();
         highlightNum(num);
         selectedCell.classList.add("input");
+        const cellRow = Math.floor(index / 9);
+        const cellCol = index % 9;
+        const cellBox = Math.floor(cellRow / 3) * 3 + Math.floor(cellCol / 3);
+        // Clear notes matching num in other cells in same row, col, or box
+        for (let i = 0; i < 81; i++) {
+            if (i !== index && notes[i].has(num)) {
+                const row = Math.floor(i / 9);
+                const col = i % 9;
+                const box = Math.floor(row / 3) * 3 + Math.floor(col / 3);
+                if (row === cellRow || col === cellCol || box === cellBox) {
+                    notes[i].delete(num);
+                    const noteEl = board.children[i].querySelector(`.note[data-num="${num}"]`);
+                    noteEl.classList.add("hidden");
+                }
+            }
+        }
         saveSnapshot();
     }
 
