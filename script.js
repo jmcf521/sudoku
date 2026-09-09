@@ -747,3 +747,11 @@ function updateState(boardArray, notesArray, selectedCellIndex) {
         highlightInvalid();
     }
 }
+
+function toggleDarkMode() {
+    if (document.getElementById('stylesheet').getAttribute('href') === 'style.css') {
+        document.getElementById('stylesheet').setAttribute('href', 'dark-mode.css');
+    } else {
+        document.getElementById('stylesheet').setAttribute('href', 'style.css');
+    }
+}
