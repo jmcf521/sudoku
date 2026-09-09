@@ -543,7 +543,16 @@ function highlightAll(boardArray, num) {
             highlightRow(row);
             highlightBox(row, col);
             highlightNum(num);
+            highlightGivens();
             highlightInputs();
+        }
+    }
+}
+
+function highlightGivens() {
+    for (let i = 0; i < 81; i++) {
+        if (board.children[i].querySelector(".cell-value").textContent != "" && board.children[i].classList.contains("given")) {
+            board.children[i].classList.add("highlighted-given");
         }
     }
 }
