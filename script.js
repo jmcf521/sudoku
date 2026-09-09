@@ -81,6 +81,7 @@ solve(solvedBoard);
 
 // Grab a reference to the empty board and number pad divs from index.html
 // Create variables for info about what is selected
+const title = document.getElementById("title");
 const board = document.getElementById("board");
 const numberPad = document.getElementById("number-pad");
 const options = document.getElementById("options");
@@ -278,6 +279,12 @@ options.addEventListener("click", (event) => {
 
     // Set mode to clicked option
     setMode(label, event.target);
+});
+
+title.addEventListener("click", (event) => {
+    const titleButton = event.target;
+    if (!titleButton.classList.contains("title")) return;
+    toggleDarkMode();
 });
 
 // Event listener key inputs
