@@ -1,16 +1,59 @@
 :root {
-  /* One shared size variable that both the board and number pad scale from.
-     Takes the smallest of: 90% of viewport width, 65% of viewport height
-     (leaving room for the heading and number pad below), or 700px max. */
   --board-size: min(90vw, 70dvh, 800px);
+
+  /* Colors -- values below are your current (dark) file, used as the defaults */
+  --bg-page: #121212;
+  --bg-board: #121212;
+  --board-border: #3F3F46;
+  --divider-border: #3F3F46;
+  --cell-border: #3F3F46;
+  --text-heading: #ccbbbb;
+  --text-main: #baa8c0;
+  --text-button: #c9c3d1;
+  --note-color: #756e80;
+  --given-bg: transparent;
+  --given-color: #a13de4;
+  --input-bg: #121212;
+  --highlight-cell-bg: #261942;
+  --highlight-input-bg: #261942;
+  --highlight-given-bg: #261942;
+  --selected-bg: #45128d;
+  --button-bg: #1e1c22;
+  --button-border: #423c4a;
+  --accent-success: #097c30;
+  --invalid-text: #a04545;
+  --invalid-bg: #a04545;
 }
 
-/* Include padding and border inside an element's width/height instead of adding to it */
+/* Light mode overrides -- values from your original light-mode file */
+body.light-mode {
+  --bg-page: #fafafa;
+  --bg-board: #fff;
+  --board-border: #222;
+  --divider-border: #000;
+  --cell-border: #111;
+  --text-heading: #222;
+  --text-main: #222;
+  --text-button: #222;
+  --note-color: #000000;
+  --given-bg: #999999;
+  --given-color: #222;
+  --input-bg: #e5e2e7;
+  --highlight-cell-bg: #ca99ff;
+  --highlight-input-bg: #D3B4F5;
+  --highlight-given-bg: #9f83bd;
+  --selected-bg: #7b2dcf;
+  --button-bg: #fff;
+  --button-border: #ccc;
+  --accent-success: #0bb343;
+  --invalid-text: #ff0000;
+  --invalid-bg: #ff0000;
+}
+
 * {
     box-sizing: border-box;
 }
 
-/* Reset default page margin, center everything on screen, and never scroll */
 body {
     margin: 0;
     height: 100vh;
@@ -19,49 +62,47 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fafafa;
+    background: var(--bg-page);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* Center the title and board as a group */
 main {
     text-align: center;
 }
 
-/* Scale the heading with viewport height so it doesn't eat too much space on short screens */
 h1 {
   font-weight: 500;
-  color: #222;
-  font-size: clamp(1.1rem, 4vh, 2rem);
+  color: var(--text-heading);
   margin: 0 0 clamp(0.5rem, 2vh, 1.5rem) 0;
+  width: clamp(10rem, 90vw, 20rem);
+  text-align: center;
+  font-size: clamp(1.1rem, 4vh, 8rem);
+  margin: 0 auto clamp(0.5rem, 2vh, 1.5rem) auto;
 }
 
-/* Lay out 81 cells in a 9x9 grid, sized responsively but capped at 700px */
 .board {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
   width: var(--board-size);
   height: var(--board-size);
-  border: 2px solid #222;
-  background: #fff;
+  border: 3px solid var(--board-border);
+  background: var(--bg-board);
 }
 
-/* Center the number inside each cell, give each a thin default border */
 .cell {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(0.9rem, calc(var(--board-size) / 14), 2.5rem);
-    color: #222;
-    border: 1px solid #111;
+    font-size: clamp(0.9rem, calc(var(--board-size) / 14), 3rem);
+    color: var(--text-main);
+    border: 1px solid var(--cell-border);
     min-height: 0;
     min-width: 0;
     overflow: hidden;
     position: relative;
 }
 
-/* Big number display -- centered, same as before */
 .cell-value {
     width: 100%;
     height: 100%;
@@ -70,7 +111,6 @@ h1 {
     justify-content: center;
 }
 
-/* 3x3 grid of tiny note slots, filling the whole cell */
 .cell-notes {
     position: absolute;
     top: 0;
@@ -82,61 +122,60 @@ h1 {
     grid-template-rows: repeat(3, 1fr);
 }
 
-/* Individual note slot -- tiny text, centered in its own mini-cell */
 .note {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 1.25rem;
     font-weight: 600;
-    color: #000000;
+    color: var(--note-color);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* Utility class to hide whichever container isn't currently relevant */
 .hidden {
     visibility: hidden;
 }
 
 .given {
     font-weight: bold;
-    background-color: #999999;
+    background-color: var(--given-bg);
+    color: var(--given-color);
 }
 
 .input {
-    background-color: #e5e2e7;
+    background-color: var(--input-bg);
 }
 
 .highlighted-cell {
-    background-color: #ca99ff;
+    background-color: var(--highlight-cell-bg);
 }
 
 .highlighted-input {
-    background-color: #D3B4F5;
+    background-color: var(--highlight-input-bg);
 }
 
 .highlighted-given {
-    background-color: #9f83bd;
+    background-color: var(--highlight-given-bg);
 }
 
 .selected-cell {
-    background-color: #7b2dcf;
+    background-color: var(--selected-bg);
+    text-shadow: 0 0 5px var(--selected-bg);
 }
 
 .cell:nth-child(3n) {
-    border-right: 3px solid #000;
+    border-right: 3px solid var(--divider-border);
 }
 
 .cell:nth-child(9n+1) {
-    border-left: 3px solid #000;
+    border-left: 3px solid var(--divider-border);
 }
 
 .cell:nth-child(n+19):nth-child(-n+27),
 .cell:nth-child(n+46):nth-child(-n+54) {
-    border-bottom: 3px solid #000;
+    border-bottom: 3px solid var(--divider-border);
 }
 
-/* Lay out 9 number buttons in a row below the board */
 .number-pad {
   width: var(--board-size);
   display: grid;
@@ -145,55 +184,60 @@ h1 {
   margin-top: clamp(0.5rem, 2vh, 1rem);
 }
 
-/* Style individual number buttons */
 .num-button {
   width: 100%;
   aspect-ratio: 1;
-  font-size: clamp(0.9rem, 3vw, 1.5rem);
-  border: 1px solid #ccc;
+  font-size: clamp(0.9rem, 4vw, 3rem);
+  border: 1px solid var(--button-border);
   border-radius: 4px;
-  background: #fff;
+  background: var(--button-bg);
+  color: var(--text-button);
   cursor: pointer;
 }
 
 .chosen-number {
-  background-color: #0bb343;
+  background-color: var(--accent-success);
   color: #fff;
 }
 
 .options {
-  width: var(--board-size);
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 1%;
+  width: var(--board-size);
+  grid-template-columns: repeat(7, 1fr);
   margin-top: clamp(0.5rem, 2vh, 1rem);
 }
 
-/* Style individual number buttons */
 .options-button {
-  width: 100%;
-  aspect-ratio: 1;
-  font-size: clamp(0.9rem, 3vw, 1.5rem);
-  border: 1px solid #ccc;
+  width: calc((var(--board-size) - 8 * 1%) / 9);
+  height: auto;
+  border: 1px solid var(--button-border);
   border-radius: 4px;
-  background: #fff;
+  background: var(--button-bg);
+  color: var(--text-button);
   cursor: pointer;
+  aspect-ratio: 1;
+  font-size: clamp(1rem, 3vw, 1.75rem);
+  white-space: normal;
+  line-height: 1.15;
+  padding: 0.2rem;
 }
 
 .active-mode {
-  background-color: #0bb343;
+  background-color: var(--accent-success);
   color: #fff;
 }
 
 .invalid {
     font-style: italic;
-    color: #ff0000;
+    color: var(--invalid-text);
 }
 
 .invalid-option {
-    background-color: #ff0000;
+    background-color: var(--invalid-bg);
 }
 
 .solved {
-    background-color: #0bb343;
+    background-color: var(--accent-success);
 }
