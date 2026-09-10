@@ -186,6 +186,8 @@ h1 {
 
 .num-button {
   width: 100%;
+  min-width: 0;
+  padding: 0;
   aspect-ratio: 1;
   font-size: clamp(0.9rem, calc(var(--board-size) / 20), 3rem);
   border: 1px solid var(--button-border);
@@ -211,6 +213,7 @@ h1 {
 
 .options-button {
   width: calc((var(--board-size) - 8 * 1%) / 9);
+  min-width: 0;
   height: auto;
   border: 1px solid var(--button-border);
   border-radius: 4px;
