@@ -1,5 +1,5 @@
 :root {
-  --board-size: min(90vw, 60svh, 1000px);
+  --board-size: min(90vw, 70svh, 1000px);
 
   /* Colors -- values below are your current (dark) file, used as the defaults */
   --bg-page: #121212;
