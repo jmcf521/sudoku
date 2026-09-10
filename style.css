@@ -64,6 +64,8 @@ body {
     justify-content: center;
     background: var(--bg-page);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 main {
@@ -209,10 +211,11 @@ h1 {
   width: var(--board-size);
   grid-template-columns: repeat(7, 1fr);
   margin-top: clamp(0.5rem, 2vh, 1rem);
+  justify-content: center;
 }
 
 .options-button {
-  width: calc((var(--board-size) - 8 * 1%) / 9);
+  width: calc((var(--board-size) - 8 * 1%) / 7);
   min-width: 0;
   height: auto;
   border: 1px solid var(--button-border);
