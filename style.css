@@ -1,5 +1,5 @@
 :root {
-  --board-size: min(90vw, 70dvh, 800px);
+  --board-size: min(90vw, 60svh, 1000px);
 
   /* Colors -- values below are your current (dark) file, used as the defaults */
   --bg-page: #121212;
@@ -58,7 +58,7 @@ body {
     margin: 0;
     height: 100vh;
     height: 100dvh;
-    overflow: hidden;
+    overflow: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -164,16 +164,16 @@ h1 {
 }
 
 .cell:nth-child(3n) {
-    border-right: 3px solid var(--divider-border);
+    border-right: 4px solid var(--divider-border);
 }
 
 .cell:nth-child(9n+1) {
-    border-left: 3px solid var(--divider-border);
+    border-left: 4px solid var(--divider-border);
 }
 
 .cell:nth-child(n+19):nth-child(-n+27),
 .cell:nth-child(n+46):nth-child(-n+54) {
-    border-bottom: 3px solid var(--divider-border);
+    border-bottom: 4px solid var(--divider-border);
 }
 
 .number-pad {
