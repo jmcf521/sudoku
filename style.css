@@ -221,10 +221,12 @@ h1 {
   color: var(--text-button);
   cursor: pointer;
   aspect-ratio: 1;
-  font-size: clamp(1rem, calc(var(--board-size) / 24), 1.75rem);
+  font-size: clamp(0.65rem, calc(var(--board-size) / 26), 1.3rem);
   white-space: normal;
   line-height: 1.15;
-  padding: 0.2rem;
+  padding: 0.2rem 0.4rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .active-mode {
